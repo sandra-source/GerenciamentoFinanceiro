@@ -12,9 +12,9 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
 {
     public class ReceitaRepository : IReceitaRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ReceitasDbContext _context;
 
-        public ReceitaRepository(ApplicationDbContext context)
+        public ReceitaRepository(ReceitasDbContext context)
         {
             _context = context;
         }

@@ -1,11 +1,13 @@
 ﻿using GerenciamentoFinanceiro.Domain.Entities;
 using GerenciamentoFinanceiro.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.Presentation.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class DespesasController : ControllerBase

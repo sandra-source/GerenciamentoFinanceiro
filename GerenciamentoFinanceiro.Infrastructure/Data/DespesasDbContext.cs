@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using GerenciamentoFinanceiro.Domain.Entities;
+﻿using GerenciamentoFinanceiro.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class DespesasDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public DespesasDbContext(DbContextOptions<DespesasDbContext> options)
             : base(options)
         {
         }
 
         public DbSet<Despesa> Despesas { get; set; }
-        public DbSet<Receita> Receitas { get; set; }
     }
 }

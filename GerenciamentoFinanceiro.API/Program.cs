@@ -1,3 +1,5 @@
+using GerenciamentoFinanceiro.Application.Interfaces;  // Interfaces dos serviços
+using GerenciamentoFinanceiro.Application.Services;   // Implementações dos serviços
 using GerenciamentoFinanceiro.Domain.Interfaces;
 using GerenciamentoFinanceiro.Infrastructure.Data;
 using GerenciamentoFinanceiro.Infrastructure.Repositories;
@@ -8,13 +10,27 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração do DbContext e repositórios
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Usar a mesma string de conexão para todos os DbContexts
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Injeção de dependência dos repositórios
+// Injetar os DbContexts usando a mesma conexão para o banco de dados PostgreSQL
+builder.Services.AddDbContext<UsuariosDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddDbContext<DespesasDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddDbContext<ReceitasDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+// Injetar os repositórios da camada de infraestrutura (camada de Infrastructure)
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IDespesaRepository, DespesaRepository>();
 builder.Services.AddScoped<IReceitaRepository, ReceitaRepository>();
+
+// Injetar os serviços da camada de aplicação (camada de Application)
+builder.Services.AddScoped<IAuthService, AuthService>();
+// Outros serviços podem ser registrados aqui
 
 // Configurar autenticação e JWT
 builder.Services.AddAuthentication(options =>
@@ -36,7 +52,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Adicionar o serviço de autorização e controladores
+// Adicionar o serviço de autorização e controladores da API
 builder.Services.AddControllers();
 builder.Services.AddAuthorization(); // Adiciona o serviço de autorização
 
@@ -45,18 +61,18 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Use o Swagger apenas no ambiente de desenvolvimento
+// Configurações do Swagger (documentação da API) no ambiente de desenvolvimento
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Adicionar middleware de autenticação e autorização
+// Adicionar middlewares para autenticação e autorização
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();  // Habilitar o middleware de autenticação
-app.UseAuthorization();   // Habilitar o middleware de autorização
+app.UseAuthentication();  // Middleware de autenticação
+app.UseAuthorization();   // Middleware de autorização
 
 // Mapear os controladores da API
 app.MapControllers();

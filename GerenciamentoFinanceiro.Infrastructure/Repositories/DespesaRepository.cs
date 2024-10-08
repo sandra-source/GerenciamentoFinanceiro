@@ -12,9 +12,9 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
 {
     public class DespesaRepository : IDespesaRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DespesasDbContext _context;
 
-        public DespesaRepository(ApplicationDbContext context)
+        public DespesaRepository(DespesasDbContext context)
         {
             _context = context;
         }

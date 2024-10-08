@@ -1,4 +1,5 @@
-﻿using GerenciamentoFinanceiro.Domain.Models;
+﻿using GerenciamentoFinanceiro.Application.DTOs;
+using GerenciamentoFinanceiro.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -8,28 +9,45 @@ using System.Text;
 
 namespace GerenciamentoFinanceiro.API.Controllers
 {
-    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly IAuthService _authService;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, IAuthService authService)
         {
             _configuration = configuration;
+            _authService = authService;
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel login)
+        public IActionResult Login([FromBody] LoginDTO login)
         {
-            // Aqui você colocaria a lógica para validar o usuário e senha no banco de dados
-            if (login.Username == "admin" && login.Password == "password")  // Troque isso por uma validação real
+            var usuario = _authService.Autenticar(login.Email, login.Password);
+
+            if (usuario == null)
             {
-                var token = GenerateJwtToken(login.Username);
-                return Ok(new { token });
+                return Unauthorized();  // Usuário ou senha incorretos
             }
-            return Unauthorized();
+
+            var token = GenerateJwtToken(usuario.Email);
+            return Ok(new { token });
+        }
+
+        [HttpPost("novo-usuario")]
+        public IActionResult CriarNovoUsuario([FromBody] UsuarioDTO usuario)
+        {
+            try
+            {
+                _authService.CriarNovoUsuario(usuario);
+                return Ok("Usuário criado com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
         }
 
         private string GenerateJwtToken(string username)
