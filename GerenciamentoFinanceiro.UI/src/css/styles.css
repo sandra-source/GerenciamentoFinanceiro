@@ -1,0 +1,89 @@
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .header-options {
+    display: flex;
+    justify-content: space-around;
+    background-color: #007bff;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .header-options button {
+    background-color: #fff;
+    color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .header-options button:hover {
+    background-color: #0056b3;
+    color: #fff;
+  }
+  
+  .grid-view {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    font-size: 16px;
+  }
+  
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  h2 {
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .grid-view h2 {
+    margin-top: 20px;
+  }
+  
+  .grid-view table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .grid-view th {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .grid-view td, .grid-view th {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .grid-view tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  
