@@ -1,25 +1,32 @@
-# Install Dependencies
+# Dependências Frontend
 
-npm i redux react-redux redux-thunk --save
+npm install react react-dom
 
-npm i redux-devtools-extension --save
+npm install react-router-dom
 
-npm i react-router-dom --save
+npm install redux
 
-npm i semantic-ui-react --save
+npm install react-redux
 
-npm i semantic-ui-css --save Redux Logger
+npm install redux-thunk
 
-npm i redux-logger --save Now we can read the states from console.
+**npm i semantic-ui-css --save Redux Logger
 
-# Entity Framework Backend
+**npm i redux-logger --save Possível ver os states no console.
 
-Add migration
+# Dependências Backend
 
-- Mac, Linux (CLI) `dotnet ef migrations add <migrationName>`
-- windows(Visual Studio) (NuGet Package Console) `Add-Migration <migrationName>`
+Mac, Linux (CLI):
 
-Update database
+- Criação da tabela de Usuarios `dotnet ef database update --context UsuariosDbContext`
+- Criação da tabela de Despesas `dotnet ef database update --context DespesasDbContext`
+- Criação da tabela de Receitas `dotnet ef database update --context ReceitasDbContext`
 
-- Mac, Linux (CLI) `dotnet ef database update`
-- windows(Visual Studio) (NuGet Package Console) `Update-Database`
+Windows(Visual Studio) (NuGet Package Console):
+
+- Criação da tabela de Usuarios `Update-Database -Context UsuariosDbContext`
+- Criação da tabela de Despesas `Update-Database -Context DespesasDbContext`
+- Criação da tabela de Receitas `Update-Database -Context ReceitasDbContext`
+  
+Cada DbContext representa um conjunto específico de tabelas e que as migrações precisam ser aplicadas separadamente.
+
