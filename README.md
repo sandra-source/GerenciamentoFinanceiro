@@ -28,5 +28,5 @@ Windows(Visual Studio) (NuGet Package Console):
 - Criação da tabela de Despesas `Update-Database -Context DespesasDbContext`
 - Criação da tabela de Receitas `Update-Database -Context ReceitasDbContext`
   
-Cada DbContext representa um conjunto específico de tabelas e que as migrações precisam ser aplicadas separadamente.
+Cada DbContext representa um conjunto específico de tabelas e migrações que precisam ser aplicadas separadamente.
 
