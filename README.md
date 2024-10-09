@@ -16,6 +16,20 @@ npm install redux-thunk
 
 # Dependências Backend
 
+Crie o banco de dados manulmente no PostgreSQL com o seguinte comando:
+`CREATE DATABASE GerenciamentoFinanceiro;`
+
+No arquivo `appsettings.json`, configure sua string de conexão ao banco de dados, ela deve se parecer com isso:
+
+<pre>{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=GerenciamentoFinanceiro;Username=SeuUsuario;Password=SuaSenha"
+  }
+} </pre>
+
+Substitua "SeuUsuario" pelo seu usuário do PostgreSQL, bem como também o "SuaSenha" por sua senha real.
+
+
 Mac, Linux (CLI):
 
 - Criação da tabela de Usuarios `dotnet ef database update --context UsuariosDbContext`
@@ -29,4 +43,5 @@ Windows(Visual Studio) (NuGet Package Console):
 - Criação da tabela de Receitas `Update-Database -Context ReceitasDbContext`
   
 Cada DbContext representa um conjunto específico de tabelas e migrações que precisam ser aplicadas separadamente.
+
 
