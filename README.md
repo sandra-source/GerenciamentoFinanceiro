@@ -10,6 +10,8 @@ npm install react-redux
 
 npm install redux-thunk
 
+npm install react-icons --legacy-peer-deps
+
 **npm i semantic-ui-css --save Redux Logger
 
 **npm i redux-logger --save Possível ver os states no console.
