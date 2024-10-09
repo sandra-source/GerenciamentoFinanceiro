@@ -16,9 +16,10 @@ npm i redux-logger --save Now we can read the states from console.
 
 Add migration
 
-- Mac, Linux (CLI) dotnet ef migrations add <migrationName>
-- windows(Visual Studio) (NuGet Package Console) Add-Migration <migrationName>
+- Mac, Linux (CLI) `dotnet ef migrations add <migrationName>`
+- windows(Visual Studio) (NuGet Package Console) `Add-Migration <migrationName>`
+
 Update database
 
-- Mac, Linux (CLI) dotnet ef database update
-- windows(Visual Studio) (NuGet Package Console) Update-Database
+- Mac, Linux (CLI) `dotnet ef database update`
+- windows(Visual Studio) (NuGet Package Console) `Update-Database`
