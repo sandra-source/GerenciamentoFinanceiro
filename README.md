@@ -17,6 +17,7 @@ npm install redux-thunk
 # Dependências Backend
 
 Crie o banco de dados manulmente no PostgreSQL com o seguinte comando:
+
 `CREATE DATABASE GerenciamentoFinanceiro;`
 
 No arquivo `appsettings.json`, configure sua string de conexão ao banco de dados, ela deve se parecer com isso:
