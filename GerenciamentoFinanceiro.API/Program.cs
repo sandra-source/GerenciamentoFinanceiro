@@ -16,10 +16,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Injetar os DbContexts usando a mesma conexão para o banco de dados PostgreSQL
 builder.Services.AddDbContext<UsuariosDbContext>(options =>
     options.UseNpgsql(connectionString));
-
 builder.Services.AddDbContext<DespesasDbContext>(options =>
     options.UseNpgsql(connectionString));
-
 builder.Services.AddDbContext<ReceitasDbContext>(options =>
     options.UseNpgsql(connectionString));
 
@@ -30,6 +28,9 @@ builder.Services.AddScoped<IReceitaRepository, ReceitaRepository>();
 
 // Injetar os serviços da camada de aplicação (camada de Application)
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRelatorioService, RelatorioService>();
+builder.Services.AddScoped<IReceitaService, ReceitaService>();
+builder.Services.AddScoped<IDespesaService, DespesaService>();
 // Outros serviços podem ser registrados aqui
 
 // Configurar autenticação e JWT
@@ -52,6 +53,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Configuração de CORS para permitir todas as origens (ou configurar origens específicas)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 // Adicionar o serviço de autorização e controladores da API
 builder.Services.AddControllers();
 builder.Services.AddAuthorization(); // Adiciona o serviço de autorização
@@ -67,6 +79,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Configuração de CORS antes dos middlewares de autenticação/autorizaçao
+app.UseCors("AllowAllOrigins");
 
 // Adicionar middlewares para autenticação e autorização
 app.UseHttpsRedirection();

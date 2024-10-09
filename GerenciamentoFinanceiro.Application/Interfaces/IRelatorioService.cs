@@ -1,5 +1,4 @@
 ﻿using GerenciamentoFinanceiro.Application.DTOs;
-using GerenciamentoFinanceiro.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.Application.Interfaces
 {
-    public interface IAuthService
+    public interface IRelatorioService
     {
-        Task<Usuario> Autenticar(string username, string password);
-        Task CriarNovoUsuario(UsuarioDTO novoUsuario);
+        Task<RelatorioGeradoDTO> GerarRelatorioAsync(DateTime dataInicio, DateTime dataFim, string categoria = null);
     }
 }

@@ -11,7 +11,7 @@ namespace GerenciamentoFinanceiro.Domain.Entities
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
-        public string SenhaHash { get; set; }  // Para armazenar a senha de forma segura (com hash)
-        public string Role { get; set; }  // Se você quiser implementar roles como "Admin", "User", etc.
+        public string SenhaHash { get; set; }  
+        public string Role { get; set; }  
     }
 }

@@ -19,29 +19,38 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Despesa>> GetAll()
+        public async Task<IEnumerable<Despesa>> ObterDespesas(DateTime dataInicio, DateTime dataFim, string categoria = null)
+        {
+            var query = _context.Despesas.AsQueryable();
+
+            if (!string.IsNullOrEmpty(categoria))
+            {
+                query = query.Where(d => d.Categoria == categoria);
+            }
+
+            query = query.Where(d => d.DataVencimento >= dataInicio && d.DataVencimento <= dataFim);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Despesa>> ObterTodasDespesas()
         {
             return await _context.Despesas.ToListAsync();
         }
 
-        public async Task<Despesa> GetById(int id)
+        public async Task AdicionarDespesa(Despesa despesa)
         {
-            return await _context.Despesas.FindAsync(id);
-        }
-
-        public async Task Add(Despesa despesa)
-        {
-            _context.Despesas.Add(despesa);
+            await _context.Despesas.AddAsync(despesa);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(Despesa despesa)
+        public async Task AtualizarDespesa(Despesa despesa)
         {
-            _context.Entry(despesa).State = EntityState.Modified;
+            _context.Despesas.Update(despesa);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task RemoverDespesa(int id)
         {
             var despesa = await _context.Despesas.FindAsync(id);
             if (despesa != null)
@@ -49,6 +58,11 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 _context.Despesas.Remove(despesa);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<Despesa> ObterPorId(int id)
+        {
+            return await _context.Despesas.FindAsync(id);
         }
     }
 }

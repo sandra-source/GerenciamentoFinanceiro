@@ -3,17 +3,20 @@ using System;
 using GerenciamentoFinanceiro.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace GerenciamentoFinanceiro.Infrastructure.Migrations.DespesasDb
+namespace GerenciamentoFinanceiro.Infrastructure.Migrations.ReceitasDb
 {
-    [DbContext(typeof(DespesasDbContext))]
-    partial class DespesasDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ReceitasDbContext))]
+    [Migration("20241009032457_UpdateReceitasTable")]
+    partial class UpdateReceitasTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.DespesasDb
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("GerenciamentoFinanceiro.Domain.Entities.Despesa", b =>
+            modelBuilder.Entity("GerenciamentoFinanceiro.Domain.Entities.Receita", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,20 +33,13 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.DespesasDb
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DataEmissao")
+                    b.Property<DateTime>("DataRecebimento")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("DataVencimento")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Descricao")
+                    b.Property<string>("Fonte")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -52,6 +48,10 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.DespesasDb
                         .HasColumnType("text");
 
                     b.Property<string>("Natureza")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Observacao")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -64,7 +64,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.DespesasDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Despesas");
+                    b.ToTable("Receitas");
                 });
 #pragma warning restore 612, 618
         }

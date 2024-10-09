@@ -1,6 +1,7 @@
 ﻿using GerenciamentoFinanceiro.Domain.Entities;
 using GerenciamentoFinanceiro.Domain.Interfaces;
 using GerenciamentoFinanceiro.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,20 +19,20 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             _context = context;
         }
 
-        public void Add(Usuario usuario)
+        public async Task AdicionarUsuario(Usuario usuario)
         {
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges(); 
+            await _context.Usuarios.AddAsync(usuario);
+            await _context.SaveChangesAsync();
         }
 
-        public Usuario GetByEmail(string email)
+        public async Task<Usuario> ObterPorEmail(string email)
         {
-            return _context.Usuarios.SingleOrDefault(u => u.Email == email);
+            return await _context.Usuarios.SingleOrDefaultAsync(u => u.Email == email);
         }
-        
-        public Usuario GetByUsername(string username)
+
+        public async Task<Usuario> ObterPorNome(string username)
         {
-            return _context.Usuarios.SingleOrDefault(u => u.Nome == username);
+            return await _context.Usuarios.SingleOrDefaultAsync(u => u.Nome == username);
         }
     }
 }

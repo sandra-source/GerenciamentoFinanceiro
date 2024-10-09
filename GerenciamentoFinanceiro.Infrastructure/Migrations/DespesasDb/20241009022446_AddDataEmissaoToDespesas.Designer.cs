@@ -3,6 +3,7 @@ using System;
 using GerenciamentoFinanceiro.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GerenciamentoFinanceiro.Infrastructure.Migrations.DespesasDb
 {
     [DbContext(typeof(DespesasDbContext))]
-    partial class DespesasDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009022446_AddDataEmissaoToDespesas")]
+    partial class AddDataEmissaoToDespesas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,10 +45,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.DespesasDb
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("FormaDePagamento")
                         .IsRequired()

@@ -19,29 +19,38 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Receita>> GetAll()
+        public async Task<IEnumerable<Receita>> ObterReceitas(DateTime dataInicio, DateTime dataFim, string categoria = null)
+        {
+            var query = _context.Receitas.AsQueryable();
+
+            if (!string.IsNullOrEmpty(categoria))
+            {
+                query = query.Where(r => r.Fonte == categoria);
+            }
+
+            query = query.Where(r => r.DataRecebimento >= dataInicio && r.DataRecebimento <= dataFim);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Receita>> ObterTodasReceitas()
         {
             return await _context.Receitas.ToListAsync();
         }
 
-        public async Task<Receita> GetById(int id)
+        public async Task AdicionarReceita(Receita receita)
         {
-            return await _context.Receitas.FindAsync(id);
-        }
-
-        public async Task Add(Receita receita)
-        {
-            _context.Receitas.Add(receita);
+            await _context.Receitas.AddAsync(receita);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(Receita receita)
+        public async Task AtualizarReceita(Receita receita)
         {
-            _context.Entry(receita).State = EntityState.Modified;
+            _context.Receitas.Update(receita);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task RemoverReceita(int id)
         {
             var receita = await _context.Receitas.FindAsync(id);
             if (receita != null)
@@ -49,6 +58,11 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 _context.Receitas.Remove(receita);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<Receita> ObterPorId(int id)
+        {
+            return await _context.Receitas.FindAsync(id);
         }
     }
 }

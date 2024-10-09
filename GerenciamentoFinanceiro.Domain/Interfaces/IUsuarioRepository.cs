@@ -9,8 +9,8 @@ namespace GerenciamentoFinanceiro.Domain.Interfaces
 {
     public interface IUsuarioRepository
     {
-        Usuario GetByEmail(string email);
-        Usuario GetByUsername(string username);
-        void Add(Usuario usuario);
+        Task<Usuario> ObterPorEmail(string email);
+        Task<Usuario> ObterPorNome(string username);
+        Task AdicionarUsuario(Usuario usuario);
     }
 }

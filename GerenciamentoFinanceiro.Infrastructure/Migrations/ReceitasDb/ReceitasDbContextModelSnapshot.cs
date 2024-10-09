@@ -33,11 +33,26 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.ReceitasDb
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Descricao")
+                    b.Property<DateTime>("DataRecebimento")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Fonte")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Fonte")
+                    b.Property<string>("FormaDePagamento")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Natureza")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Observacao")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Origem")
                         .IsRequired()
                         .HasColumnType("text");
 

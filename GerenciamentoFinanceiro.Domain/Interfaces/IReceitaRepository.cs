@@ -9,10 +9,11 @@ namespace GerenciamentoFinanceiro.Domain.Interfaces
 {
     public interface IReceitaRepository
     {
-        Task<IEnumerable<Receita>> GetAll();
-        Task<Receita> GetById(int id);
-        Task Add(Receita receita);
-        Task Update(Receita receita);
-        Task Delete(int id);
+        Task<IEnumerable<Receita>> ObterReceitas(DateTime dataInicio, DateTime dataFim, string categoria = null);
+        Task<IEnumerable<Receita>> ObterTodasReceitas();
+        Task<Receita> ObterPorId(int id);
+        Task AdicionarReceita(Receita receita);
+        Task AtualizarReceita(Receita receita);
+        Task RemoverReceita(int id);
     }
 }

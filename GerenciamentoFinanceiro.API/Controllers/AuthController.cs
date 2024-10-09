@@ -23,34 +23,34 @@ namespace GerenciamentoFinanceiro.API.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDTO login)
+        public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
-            var usuario = _authService.Autenticar(login.Email, login.Password);
+            var usuario = await _authService.Autenticar(login.Email, login.Password);
 
             if (usuario == null)
             {
                 return Unauthorized();  // Usuário ou senha incorretos
             }
 
-            var token = GenerateJwtToken(usuario.Email);
+            var token = await GenerateJwtTokenAsync(usuario.Email);
             return Ok(new { token });
         }
 
         [HttpPost("novo-usuario")]
-        public IActionResult CriarNovoUsuario([FromBody] UsuarioDTO usuario)
+        public async Task<IActionResult> CriarNovoUsuario([FromBody] UsuarioDTO usuario)
         {
             try
             {
-                _authService.CriarNovoUsuario(usuario);
+                await _authService.CriarNovoUsuario(usuario);
                 return Ok("Usuário criado com sucesso.");
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);  
+                return BadRequest(ex.Message);
             }
         }
 
-        private string GenerateJwtToken(string username)
+        private async Task<string> GenerateJwtTokenAsync(string username)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -68,7 +68,7 @@ namespace GerenciamentoFinanceiro.API.Controllers
                 expires: DateTime.Now.AddMinutes(90),
                 signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
     }
 }

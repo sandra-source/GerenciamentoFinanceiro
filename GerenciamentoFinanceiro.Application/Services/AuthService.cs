@@ -20,9 +20,9 @@ namespace GerenciamentoFinanceiro.Application.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public void CriarNovoUsuario(UsuarioDTO novoUsuario)
+        public async Task CriarNovoUsuario(UsuarioDTO novoUsuario)
         {
-            var usuarioExistente = _usuarioRepository.GetByUsername(novoUsuario.Email);
+            var usuarioExistente = await _usuarioRepository.ObterPorEmail(novoUsuario.Email);
             if (usuarioExistente != null)
             {
                 throw new Exception("Usuário com este email já existe.");
@@ -35,15 +35,15 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Nome = novoUsuario.Nome,
                 Email = novoUsuario.Email,
                 SenhaHash = passwordHash,
-                Role = novoUsuario.Role ?? "User" 
+                Role = novoUsuario.Role ?? "User"
             };
 
-            _usuarioRepository.Add(usuario);
+            await _usuarioRepository.AdicionarUsuario(usuario);
         }
 
-        public Usuario Autenticar(string email, string password)
+        public async Task<Usuario> Autenticar(string email, string password)
         {
-            var user = _usuarioRepository.GetByEmail(email);
+            var user = await _usuarioRepository.ObterPorEmail(email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.SenhaHash))
             {
