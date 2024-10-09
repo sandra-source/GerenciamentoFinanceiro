@@ -48,6 +48,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "gerenciamento-financeiro-fr
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "55437"
+		SlnRelativePath = "gerenciamento-financeiro-frontend\"
 	EndProjectSection
 EndProject
 Global
