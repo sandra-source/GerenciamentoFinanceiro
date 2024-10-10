@@ -33,7 +33,8 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Origem = d.Origem,
                 Natureza = d.Natureza,
                 DataEmissao = d.DataEmissao,
-                DataVencimento = d.DataVencimento
+                DataVencimento = d.DataVencimento,
+                Status = d.Status
             }).ToList();
         }
 

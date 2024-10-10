@@ -1,4 +1,5 @@
 ﻿using GerenciamentoFinanceiro.Domain.Entities;
+using GerenciamentoFinanceiro.Domain.Enums;
 using GerenciamentoFinanceiro.Domain.Interfaces;
 using GerenciamentoFinanceiro.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -23,18 +24,17 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         {
             var query = _context.Despesas.AsQueryable();
 
-            // Filtros
-            if (!string.IsNullOrEmpty(tipo))
-            {
-                query = query.Where(d => d.Categoria == tipo);
-            }
-
-            //if (!string.IsNullOrEmpty(status))
+            //if (!string.IsNullOrEmpty(tipo))
             //{
-            //    query = query.Where(d => d.Status == status);
+            //    query = query.Where(d => d.Categoria == tipo);
             //}
 
-            // Ordenação por valor
+            if (!string.IsNullOrEmpty(status))
+            {
+                var statusEnum = Enum.Parse<StatusDespesa>(status);
+                query = query.Where(d => d.Status == statusEnum);
+            }
+
             if (ordenacaoValor == "crescente")
             {
                 query = query.OrderBy(d => d.Valor);
@@ -44,7 +44,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.OrderByDescending(d => d.Valor);
             }
 
-            // Ordenação por vencimento
             if (ordenacaoVencimento == "crescente")
             {
                 query = query.OrderBy(d => d.DataVencimento);

@@ -1,4 +1,3 @@
-// src/components/GridView.js
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
@@ -7,8 +6,10 @@ import '../css/gridView.css';
 
 const GridView = () => {
     const dispatch = useDispatch();
-    const transacoes = useSelector((state) => state.transacoes ?? []); // Garantir que seja um array
-    
+    const despesas = useSelector((state) => state.despesas || []);
+    const receitas = useSelector((state) => state.receitas || []);
+    const transacoes = [...despesas, ...receitas];
+
     const [ordenacaoValor, setOrdenacaoValor] = useState('');
     const [ordenacaoVencimento, setOrdenacaoVencimento] = useState('');
     const [tipo, setTipo] = useState('');
@@ -53,6 +54,7 @@ const GridView = () => {
                             <option value="">Todos</option>
                             <option value="Pago">Pago</option>
                             <option value="Pendente">Pendente</option>
+                            <option value="EmNegociacao">Em Negociação</option>
                         </select>
                     </div>
                     <div className="filter-item">
@@ -87,14 +89,24 @@ const GridView = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {Array.isArray(transacoes) && transacoes.length > 0 ? (
+                            {transacoes.length > 0 ? (
                                 transacoes.map((item) => (
                                     <tr key={item.id}>
                                         <td>{item.tipo}</td>
                                         <td>{item.descricao}</td>
                                         <td>{item.valor}</td>
-                                        <td>{item.dataVencimento}</td>
-                                        <td>{item.status || 'N/A'}</td>
+                                        <td>
+                                            {new Date(item.dataVencimento).toLocaleDateString('pt-BR', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric'
+                                            })}
+                                        </td>
+                                        <td>
+                                            {item.status === 0 ? 'Pendente' : 
+                                            item.status === 1 ? 'Pago' : 
+                                            item.status === 2 ? 'Em Negociação' : 'N/A'}
+                                        </td>
                                     </tr>
                                 ))
                             ) : (

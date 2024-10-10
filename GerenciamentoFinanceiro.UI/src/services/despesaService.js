@@ -15,8 +15,8 @@ export const obterDespesas = (filtros) => {
       tipo: filtros.tipo,
       status: filtros.status,
   };
-
-  return axios.get('/api/Despesa', { params });
+  
+  return api.get('/Despesa', { params });
 };
 
 export default despesaService;

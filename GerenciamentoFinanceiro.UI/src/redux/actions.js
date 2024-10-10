@@ -27,10 +27,14 @@ export const filtrarTransacoes = (filtros) => async (dispatch) => {
             ];
         }
 
+        // Despacha as transações para o reducer
         dispatch({
             type: SET_TRANSACOES,
             payload: transacoes,
         });
+
+        // Retorna as transações para garantir que a função seja uma Promise resolvida
+        return transacoes;
     } catch (error) {
         console.error('Erro ao filtrar transações:', error);
     }

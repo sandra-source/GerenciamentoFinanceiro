@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GerenciamentoFinanceiro.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,7 @@ namespace GerenciamentoFinanceiro.Application.DTOs
         public string Natureza { get; set; }
         public DateTime DataEmissao { get; set; }
         public DateTime DataVencimento { get; set; }
+        public DateTime Data { get; set; }
+        public StatusDespesa Status { get; set; }
     }
 }
