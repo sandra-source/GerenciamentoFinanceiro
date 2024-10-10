@@ -31,7 +31,7 @@ function Login() {
             <div className="login-container">
                 <div className="left-panel">
                     <h1>FinMaps</h1>
-                    <p>Novo por aqui? Conheça FinMaps, o gerenciamento financeiro!</p>
+                    <p>Novo por aqui? Conheça FinMaps, o seu gerenciamento financeiro!</p>
                 </div>
                 <div className="right-panel">
                     <form onSubmit={handleSubmit}>
