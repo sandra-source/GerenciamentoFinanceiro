@@ -12,7 +12,7 @@ npm install redux-thunk
 
 npm install react-icons
 
-_caso qualquer comando não seja executado, por qualquer erro, basta adicionar `--legacy-peer-deps ao comando`, e então ele será executado_
+_caso qualquer comando não seja executado, por qualquer erro, basta adicionar `--legacy-peer-deps` ao comando, e então ele será executado_
 
 # Dependências Backend
 
