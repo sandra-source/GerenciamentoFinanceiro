@@ -8,11 +8,19 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
+export const login = async (email, password) => {
+  try {
+      const response = await api.post('/auth/login', { email, password });
+      return response.data;
+  } catch (error) {
+      throw error.response ? error.response.data : new Error('Erro ao conectar com o servidor');
+  }
+};
+
 // Interceptor para adicionar o token de autenticação em todas as requisições
 api.interceptors.request.use(
   (config) => {
-    //const token = localStorage.getItem('authToken');
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2FvQGV4ZW1wbG8uY29tIiwianRpIjoiMjEzNjhiODItMGQzZi00YWM5LTllZDEtNTY1NzYxZTQzNDBjIiwiZXhwIjoxNzI4NDQ5MzM1LCJpc3MiOiJhbHRlcmRhdGEiLCJhdWQiOiJhbHRlcmRhdGEucGxlbm8ifQ.wrS6epCiu4DOGj3QulmdLM7wEivrtJptvaT3IR-RZc0'
+    const token = sessionStorage.getItem('Token');
     if (token) {
       // Adiciona o token ao cabeçalho Authorization
       config.headers.Authorization = `Bearer ${token}`;

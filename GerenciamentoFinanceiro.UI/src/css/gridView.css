@@ -1,0 +1,95 @@
+/* src/css/GridView.css */
+/* src/css/GridView.css */
+html, body {
+    height: 100%; /* Garantir que o HTML e o body ocupem 100% da altura */
+    margin: 0;
+    padding: 0;
+}
+
+.grid-view-container {
+    width: 97vw; /* Ocupa toda a largura da viewport */
+    height: 96vh; /* Ocupa toda a altura da tela */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ajusta os elementos para ocupar toda a altura */
+}
+
+.navbar {
+    background-color: #007bff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.grid-view {
+    flex-grow: 1; /* Permite que a grid-view ocupe o espaço restante */
+    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: #e0e0e0;
+}
+
+.grid-view {
+    overflow-x: auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f1f1f1;
+}
+
+table tr:hover {
+    background-color: #f9f9f9;
+}
+
+table tr:last-child td {
+    border-bottom: none;
+}
