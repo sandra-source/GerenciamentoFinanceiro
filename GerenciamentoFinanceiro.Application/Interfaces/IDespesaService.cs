@@ -9,7 +9,7 @@ namespace GerenciamentoFinanceiro.Application.Interfaces
 {
     public interface IDespesaService
     {
-        Task<IEnumerable<DespesaDTO>> ObterTodasDespesas();
+        Task<IEnumerable<DespesaDTO>> ObterDespesas(string ordenacaoValor, string ordenacaoVencimento, string tipo, string status);
         Task AdicionarDespesa(DespesaDTO despesaDTO);
         Task AtualizarDespesa(DespesaDTO despesaDTO);
         Task RemoverDespesa(int id);

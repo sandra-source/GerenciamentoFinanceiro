@@ -22,9 +22,13 @@ namespace GerenciamentoFinanceiro.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DespesaDTO>>> ObterTodasDespesas()
+        public async Task<ActionResult<IEnumerable<DespesaDTO>>> ObterDespesas(
+            string ordenacaoValor = null,
+            string ordenacaoVencimento = null,
+            string tipo = null,
+            string status = null)
         {
-            var despesas = await _despesaService.ObterTodasDespesas();
+            var despesas = await _despesaService.ObterDespesas(ordenacaoValor, ordenacaoVencimento, tipo, status);
             return Ok(despesas);
         }
 

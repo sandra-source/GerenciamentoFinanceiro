@@ -24,22 +24,24 @@ namespace GerenciamentoFinanceiro.Application.Services
         public async Task<RelatorioGeradoDTO> GerarRelatorioAsync(DateTime dataInicio, DateTime dataFim, string categoria = null)
         {
             // Esperar os dados de despesas e receitas de forma assíncrona
-            var despesas = await _despesaRepository.ObterDespesas(dataInicio, dataFim, categoria);
-            var receitas = await _receitaRepository.ObterReceitas(dataInicio, dataFim, categoria);
+            //var despesas = await _despesaRepository.ObterDespesas(dataInicio, dataFim, categoria);
+            //var receitas = await _receitaRepository.ObterReceitas(dataInicio, dataFim, categoria);
 
-            // Calcular o total de despesas e receitas
-            var totalDespesas = despesas.Sum(d => d.Valor);
-            var totalReceitas = receitas.Sum(r => r.Valor);
+            //// Calcular o total de despesas e receitas
+            //var totalDespesas = despesas.Sum(d => d.Valor);
+            //var totalReceitas = receitas.Sum(r => r.Valor);
 
-            // Retornar o DTO do relatório gerado
-            return new RelatorioGeradoDTO
-            {
-                TotalDespesas = totalDespesas,
-                TotalReceitas = totalReceitas,
-                Saldo = totalReceitas - totalDespesas,
-                Despesas = despesas.ToList(),
-                Receitas = receitas.ToList()
-            };
+            //// Retornar o DTO do relatório gerado
+            //return new RelatorioGeradoDTO
+            //{
+            //    TotalDespesas = totalDespesas,
+            //    TotalReceitas = totalReceitas,
+            //    Saldo = totalReceitas - totalDespesas,
+            //    Despesas = despesas.ToList(),
+            //    Receitas = receitas.ToList()
+            //};  ->>> TERMINAR
+
+            return new RelatorioGeradoDTO();
         }
     }
 }

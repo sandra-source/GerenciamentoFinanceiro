@@ -1,25 +1,37 @@
 // src/redux/actions.js
-import despesaService from '../services/despesaService';
-import receitaService from '../services/receitaService';
+import { obterDespesas } from '../services/despesaService';
+import { obterReceitas } from '../services/receitaService';
 
-export const SET_TRANSACOES = 'SET_TRANSACOES'; // Definir a constante
+export const SET_TRANSACOES = 'SET_TRANSACOES';
 
-export const filtrarTransacoes = () => async dispatch => {
+export const filtrarTransacoes = (filtros) => async (dispatch) => {
     try {
-      const [despesas, receitas] = await Promise.all([
-        despesaService.fetchDespesas(),
-        receitaService.fetchReceitas()
-      ]);
-  
-      const transacoes = [
-        ...despesas.map(d => ({ ...d, tipo: 'Despesa' })),
-        ...receitas.map(r => ({ ...r, tipo: 'Receita' }))
-      ];
-  
-      console.log('Transações carregadas:', transacoes); // Adicionar log para verificar os dados
-  
-      dispatch({ type: SET_TRANSACOES, payload: transacoes });
+        let transacoes = [];
+
+        // Verificar o filtro de tipo e buscar os dados correspondentes
+        if (filtros.tipo === 'Receita') {
+            const receitasResponse = await obterReceitas(filtros);
+            transacoes = receitasResponse.data.map(r => ({ ...r, tipo: 'Receita' }));
+        } else if (filtros.tipo === 'Despesa') {
+            const despesasResponse = await obterDespesas(filtros);
+            transacoes = despesasResponse.data.map(d => ({ ...d, tipo: 'Despesa' }));
+        } else {
+            const [despesasResponse, receitasResponse] = await Promise.all([
+                obterDespesas(filtros),
+                obterReceitas(filtros),
+            ]);
+
+            transacoes = [
+                ...despesasResponse.data.map(d => ({ ...d, tipo: 'Despesa' })),
+                ...receitasResponse.data.map(r => ({ ...r, tipo: 'Receita' }))
+            ];
+        }
+
+        dispatch({
+            type: SET_TRANSACOES,
+            payload: transacoes,
+        });
     } catch (error) {
-      console.error("Erro ao buscar transações:", error);
+        console.error('Erro ao filtrar transações:', error);
     }
-  };
+};

@@ -9,7 +9,7 @@ namespace GerenciamentoFinanceiro.Domain.Interfaces
 {
     public interface IDespesaRepository
     {
-        Task<IEnumerable<Despesa>> ObterDespesas(DateTime dataInicio, DateTime dataFim, string categoria = null);
+        Task<IEnumerable<Despesa>> ObterDespesas(string ordenacaoValor, string ordenacaoVencimento, string tipo, string status);
         Task<IEnumerable<Despesa>> ObterTodasDespesas();
         Task AdicionarDespesa(Despesa despesa);
         Task AtualizarDespesa(Despesa despesa);

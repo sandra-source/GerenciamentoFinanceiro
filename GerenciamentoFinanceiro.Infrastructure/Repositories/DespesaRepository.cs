@@ -19,16 +19,40 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Despesa>> ObterDespesas(DateTime dataInicio, DateTime dataFim, string categoria = null)
+        public async Task<IEnumerable<Despesa>> ObterDespesas(string ordenacaoValor, string ordenacaoVencimento, string tipo, string status)
         {
             var query = _context.Despesas.AsQueryable();
 
-            if (!string.IsNullOrEmpty(categoria))
+            // Filtros
+            if (!string.IsNullOrEmpty(tipo))
             {
-                query = query.Where(d => d.Categoria == categoria);
+                query = query.Where(d => d.Categoria == tipo);
             }
 
-            query = query.Where(d => d.DataVencimento >= dataInicio && d.DataVencimento <= dataFim);
+            //if (!string.IsNullOrEmpty(status))
+            //{
+            //    query = query.Where(d => d.Status == status);
+            //}
+
+            // Ordenação por valor
+            if (ordenacaoValor == "crescente")
+            {
+                query = query.OrderBy(d => d.Valor);
+            }
+            else if (ordenacaoValor == "decrescente")
+            {
+                query = query.OrderByDescending(d => d.Valor);
+            }
+
+            // Ordenação por vencimento
+            if (ordenacaoVencimento == "crescente")
+            {
+                query = query.OrderBy(d => d.DataVencimento);
+            }
+            else if (ordenacaoVencimento == "decrescente")
+            {
+                query = query.OrderByDescending(d => d.DataVencimento);
+            }
 
             return await query.ToListAsync();
         }

@@ -7,8 +7,8 @@ html, body {
 }
 
 .grid-view-container {
-    width: 97vw; /* Ocupa toda a largura da viewport */
-    height: 96vh; /* Ocupa toda a altura da tela */
+    width: 97vw; 
+    height: 96vh; 
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -16,7 +16,7 @@ html, body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ajusta os elementos para ocupar toda a altura */
+    /* justify-content: space-between;  */
 }
 
 .navbar {
@@ -31,7 +31,7 @@ html, body {
 }
 
 .grid-view {
-    flex-grow: 1; /* Permite que a grid-view ocupe o espaço restante */
+    flex-grow: 1; /* Ocupa o espaço restante */
     overflow-y: auto; /* Adiciona rolagem vertical se necessário */
     background-color: white;
     padding: 20px;
@@ -62,13 +62,6 @@ html, body {
     color: #e0e0e0;
 }
 
-.grid-view {
-    overflow-x: auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -92,4 +85,96 @@ table tr:hover {
 
 table tr:last-child td {
     border-bottom: none;
+}
+
+.logout-icon {
+    cursor: pointer;
+    color: white; /* Ícone branco */
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.logout-icon:hover {
+    transform: scale(1.2); 
+    color: #e0e0e0;
+}
+
+.navbar li {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.navbar li:hover {
+    transform: scale(1.1) !important;
+    color: #e0e0e0;
+}
+
+.main-content {
+    display: flex;
+    gap: 20px;
+    height: 98%;
+}
+
+.filters-container {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    min-height: 400px;
+}
+
+.filters-container h3 {
+    margin-bottom: 15px;
+}
+
+.filter-item {
+    margin-bottom: 15px;
+}
+
+.apply-filters-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.apply-filters-button:hover {
+    background-color: #0056b3;
+}
+
+.filters-container select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    appearance: none; 
+}
+
+.filters-container select:hover {
+    border-color: #007bff;
+}
+
+.filters-container select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.filters-container select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%204%205%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M2%200l2%205H0z%22/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 10px 10px;
+    padding-right: 30px; /* Espaço extra para a seta */
 }

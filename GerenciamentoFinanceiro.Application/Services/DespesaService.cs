@@ -19,9 +19,10 @@ namespace GerenciamentoFinanceiro.Application.Services
             _despesaRepository = despesaRepository;
         }
 
-        public async Task<IEnumerable<DespesaDTO>> ObterTodasDespesas()
+        public async Task<IEnumerable<DespesaDTO>> ObterDespesas(string ordenacaoValor, string ordenacaoVencimento, string tipo, string status)
         {
-            var despesas = await _despesaRepository.ObterTodasDespesas();
+            var despesas = await _despesaRepository.ObterDespesas(ordenacaoValor, ordenacaoVencimento, tipo, status);
+
             return despesas.Select(d => new DespesaDTO
             {
                 Id = d.Id,
