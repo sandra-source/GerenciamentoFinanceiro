@@ -15,10 +15,10 @@ namespace GerenciamentoFinanceiro.Application.DTOs
         public string Descricao { get; set; }
         public string FormaDePagamento { get; set; }
         public string Origem { get; set; }
-        public string Natureza { get; set; }
+        public NaturezaEnum Natureza { get; set; }
         public DateTime DataEmissao { get; set; }
         public DateTime DataVencimento { get; set; }
-        public DateTime Data { get; set; }
-        public StatusDespesa Status { get; set; }
+        public DateTime DataRegistro { get; set; }
+        public StatusDespesaEnum Status { get; set; }
     }
 }

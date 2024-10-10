@@ -30,13 +30,17 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.ReceitasDb
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Data")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DataRecebimento")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Fonte")
+                    b.Property<DateTime>("DataRegistro")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -44,9 +48,8 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.ReceitasDb
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Natureza")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Natureza")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Observacao")
                         .IsRequired()
@@ -55,6 +58,9 @@ namespace GerenciamentoFinanceiro.Infrastructure.Migrations.ReceitasDb
                     b.Property<string>("Origem")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("numeric");

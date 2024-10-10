@@ -135,6 +135,7 @@ table tr:last-child td {
 }
 
 .apply-filters-button {
+    font-family: 'Poppins', sans-serif;
     background-color: #007bff;
     color: white;
     border: none;

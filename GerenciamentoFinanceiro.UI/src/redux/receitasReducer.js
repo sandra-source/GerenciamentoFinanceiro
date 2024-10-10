@@ -1,14 +1,14 @@
-// src/redux/receitasReducer.js
-import { SET_TRANSACOES } from './actions';
+import { SET_TRANSACOES, LIMPAR_TRANSACOES } from './actions';
 
 const receitasReducer = (state = [], action) => {
-  switch (action.type) {
-    case SET_TRANSACOES:
-      // Filtrar apenas as receitas
-      return action.payload.filter(transacao => transacao.tipo === 'Receita');
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case LIMPAR_TRANSACOES:
+            return []; 
+        case SET_TRANSACOES:
+            return action.payload; 
+        default:
+            return state;
+    }
 };
 
 export default receitasReducer;

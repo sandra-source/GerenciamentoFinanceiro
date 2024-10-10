@@ -9,7 +9,7 @@ namespace GerenciamentoFinanceiro.Application.Interfaces
 {
     public interface IReceitaService
     {
-        Task<IEnumerable<ReceitaDTO>> ObterTodasReceitas();
+        Task<IEnumerable<ReceitaDTO>> ObterReceitas(string ordenacaoValor, string ordenacaoDataRecebimento, string categoria, string status);
         Task<ReceitaDTO> ObterPorId(int id);
         Task AdicionarReceita(ReceitaDTO receitaDTO);
         Task AtualizarReceita(ReceitaDTO receitaDTO);

@@ -1,41 +1,46 @@
-// src/redux/actions.js
 import { obterDespesas } from '../services/despesaService';
 import { obterReceitas } from '../services/receitaService';
 
 export const SET_TRANSACOES = 'SET_TRANSACOES';
+// src/redux/actions.js
+export const LIMPAR_TRANSACOES = 'LIMPAR_TRANSACOES';
+
+export const limparTransacoes = () => ({
+    type: LIMPAR_TRANSACOES,
+});
 
 export const filtrarTransacoes = (filtros) => async (dispatch) => {
-    try {
-        let transacoes = [];
+  try {
+      dispatch(limparTransacoes());
 
-        // Verificar o filtro de tipo e buscar os dados correspondentes
-        if (filtros.tipo === 'Receita') {
-            const receitasResponse = await obterReceitas(filtros);
-            transacoes = receitasResponse.data.map(r => ({ ...r, tipo: 'Receita' }));
-        } else if (filtros.tipo === 'Despesa') {
-            const despesasResponse = await obterDespesas(filtros);
-            transacoes = despesasResponse.data.map(d => ({ ...d, tipo: 'Despesa' }));
-        } else {
-            const [despesasResponse, receitasResponse] = await Promise.all([
-                obterDespesas(filtros),
-                obterReceitas(filtros),
-            ]);
+      let transacoes = [];
 
-            transacoes = [
-                ...despesasResponse.data.map(d => ({ ...d, tipo: 'Despesa' })),
-                ...receitasResponse.data.map(r => ({ ...r, tipo: 'Receita' }))
-            ];
-        }
+      if (filtros.tipo === 'Receita') {
+          const receitasResponse = await obterReceitas(filtros);
+          transacoes = receitasResponse.data.map(r => ({ ...r, tipo: 'Receita' }));
+      } else if (filtros.tipo === 'Despesa') {
+          const despesasResponse = await obterDespesas(filtros);
+          transacoes = despesasResponse.data.map(d => ({ ...d, tipo: 'Despesa' }));
+      } else {
+          const [despesasResponse, receitasResponse] = await Promise.all([
+              obterDespesas(filtros),
+              obterReceitas(filtros),
+          ]);
 
-        // Despacha as transações para o reducer
-        dispatch({
-            type: SET_TRANSACOES,
-            payload: transacoes,
-        });
+          transacoes = [
+              ...despesasResponse.data.map(d => ({ ...d, tipo: 'Despesa' })),
+              ...receitasResponse.data.map(r => ({ ...r, tipo: 'Receita' })),
+          ];
+      }
 
-        // Retorna as transações para garantir que a função seja uma Promise resolvida
-        return transacoes;
-    } catch (error) {
-        console.error('Erro ao filtrar transações:', error);
-    }
+      transacoes = Array.from(new Set(transacoes.map(t => t.id)))
+          .map(id => transacoes.find(t => t.id === id));
+
+      dispatch({
+          type: SET_TRANSACOES,
+          payload: transacoes,
+      });
+  } catch (error) {
+      console.error('Erro ao filtrar transações:', error);
+  }
 };

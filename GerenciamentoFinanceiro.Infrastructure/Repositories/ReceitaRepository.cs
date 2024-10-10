@@ -19,16 +19,41 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Receita>> ObterReceitas(DateTime dataInicio, DateTime dataFim, string categoria = null)
+        public async Task<IEnumerable<Receita>> ObterReceitas(string ordenacaoValor, string ordenacaoDataRecebimento, string categoria, string status)
         {
             var query = _context.Receitas.AsQueryable();
 
+            // Filtrar por categoria, se especificada
             if (!string.IsNullOrEmpty(categoria))
             {
-                query = query.Where(r => r.Fonte == categoria);
+                query = query.Where(r => r.Categoria == categoria);
             }
 
-            query = query.Where(r => r.DataRecebimento >= dataInicio && r.DataRecebimento <= dataFim);
+            // Filtrar por status, se especificado
+            if (!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(r => r.Status.ToString() == status);
+            }
+
+            // Ordenar por valor, se especificado
+            if (ordenacaoValor == "crescente")
+            {
+                query = query.OrderBy(r => r.Valor);
+            }
+            else if (ordenacaoValor == "decrescente")
+            {
+                query = query.OrderByDescending(r => r.Valor);
+            }
+
+            // Ordenar por data de recebimento, se especificado
+            if (ordenacaoDataRecebimento == "crescente")
+            {
+                query = query.OrderBy(r => r.DataRecebimento);
+            }
+            else if (ordenacaoDataRecebimento == "decrescente")
+            {
+                query = query.OrderByDescending(r => r.DataRecebimento);
+            }
 
             return await query.ToListAsync();
         }

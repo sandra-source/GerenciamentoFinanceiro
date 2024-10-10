@@ -16,7 +16,7 @@ export const obterReceitas = (filtros) => {
       status: filtros.status,
   };
 
-  return axios.get('/api/Receita', { params });
+  return api.get('/Receita', { params });
 };
 
 export default receitaService;

@@ -21,8 +21,10 @@ namespace GerenciamentoFinanceiro.Application.Services
 
         public async Task<IEnumerable<DespesaDTO>> ObterDespesas(string ordenacaoValor, string ordenacaoVencimento, string tipo, string status)
         {
+            // Obtém despesas filtradas e ordenadas do repositório
             var despesas = await _despesaRepository.ObterDespesas(ordenacaoValor, ordenacaoVencimento, tipo, status);
 
+            // Mapeia para DTOs
             return despesas.Select(d => new DespesaDTO
             {
                 Id = d.Id,
@@ -34,6 +36,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Natureza = d.Natureza,
                 DataEmissao = d.DataEmissao,
                 DataVencimento = d.DataVencimento,
+                DataRegistro = d.DataRegistro, // Inclui a DataRegistro
                 Status = d.Status
             }).ToList();
         }
@@ -49,7 +52,9 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Origem = despesaDTO.Origem,
                 Natureza = despesaDTO.Natureza,
                 DataEmissao = despesaDTO.DataEmissao,
-                DataVencimento = despesaDTO.DataVencimento
+                DataVencimento = despesaDTO.DataVencimento,
+                DataRegistro = DateTime.Now, // Define a data de registro como a data atual
+                Status = despesaDTO.Status
             };
 
             await _despesaRepository.AdicionarDespesa(despesa);
@@ -68,6 +73,8 @@ namespace GerenciamentoFinanceiro.Application.Services
                 despesa.Natureza = despesaDTO.Natureza;
                 despesa.DataEmissao = despesaDTO.DataEmissao;
                 despesa.DataVencimento = despesaDTO.DataVencimento;
+                despesa.DataRegistro = despesaDTO.DataRegistro; // Atualiza a data de registro
+                despesa.Status = despesaDTO.Status;
 
                 await _despesaRepository.AtualizarDespesa(despesa);
             }
@@ -93,8 +100,11 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Origem = despesa.Origem,
                 Natureza = despesa.Natureza,
                 DataEmissao = despesa.DataEmissao,
-                DataVencimento = despesa.DataVencimento
+                DataVencimento = despesa.DataVencimento,
+                DataRegistro = despesa.DataRegistro, // Inclui a DataRegistro
+                Status = despesa.Status
             };
         }
     }
+
 }

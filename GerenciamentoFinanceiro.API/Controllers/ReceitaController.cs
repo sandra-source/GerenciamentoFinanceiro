@@ -1,5 +1,6 @@
 ﻿using GerenciamentoFinanceiro.Application.DTOs;
 using GerenciamentoFinanceiro.Application.Interfaces;
+using GerenciamentoFinanceiro.Application.Services;
 using GerenciamentoFinanceiro.Domain.Entities;
 using GerenciamentoFinanceiro.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -22,9 +23,14 @@ namespace GerenciamentoFinanceiro.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ReceitaDTO>> GetAll()
+        public async Task<ActionResult<IEnumerable<DespesaDTO>>> ObterReceitas(
+            string ordenacaoValor = null,
+            string ordenacaoDataRecebimento = null,
+            string categoria = null,
+            string status = null)
         {
-            return await _receitaService.ObterTodasReceitas();
+            var despesas = await _receitaService.ObterReceitas(ordenacaoValor, ordenacaoDataRecebimento, categoria, status);
+            return Ok(despesas);
         }
 
         [HttpGet("{id}")]

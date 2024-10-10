@@ -31,7 +31,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
 
             if (!string.IsNullOrEmpty(status))
             {
-                var statusEnum = Enum.Parse<StatusDespesa>(status);
+                var statusEnum = Enum.Parse<StatusDespesaEnum>(status);
                 query = query.Where(d => d.Status == statusEnum);
             }
 

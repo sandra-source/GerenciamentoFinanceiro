@@ -19,18 +19,20 @@ namespace GerenciamentoFinanceiro.Application.Services
             _receitaRepository = receitaRepository;
         }
 
-        public async Task<IEnumerable<ReceitaDTO>> ObterTodasReceitas()
+        public async Task<IEnumerable<ReceitaDTO>> ObterReceitas(string ordenacaoValor, string ordenacaoDataRecebimento, string categoria, string status)
         {
-            var receitas = await _receitaRepository.ObterTodasReceitas();
+            var receitas = await _receitaRepository.ObterReceitas(ordenacaoValor, ordenacaoDataRecebimento, categoria, status);
+
             return receitas.Select(r => new ReceitaDTO
             {
                 Id = r.Id,
                 Valor = r.Valor,
-                Fonte = r.Fonte,
+                Categoria = r.Categoria,
                 FormaDePagamento = r.FormaDePagamento,
                 Origem = r.Origem,
                 Natureza = r.Natureza,
-                DataRecebimento = r.DataRecebimento
+                DataRecebimento = r.DataRecebimento,
+                Status = r.Status
             }).ToList();
         }
 
@@ -43,7 +45,7 @@ namespace GerenciamentoFinanceiro.Application.Services
             {
                 Id = receita.Id,
                 Valor = receita.Valor,
-                Fonte = receita.Fonte,
+                Categoria = receita.Categoria,
                 FormaDePagamento = receita.FormaDePagamento,
                 Origem = receita.Origem,
                 Natureza = receita.Natureza,
@@ -56,7 +58,7 @@ namespace GerenciamentoFinanceiro.Application.Services
             var receita = new Receita
             {
                 Valor = receitaDTO.Valor,
-                Fonte = receitaDTO.Fonte,
+                Categoria = receitaDTO.Categoria,
                 Observacao = receitaDTO.Observacao,
                 FormaDePagamento = receitaDTO.FormaDePagamento,
                 Origem = receitaDTO.Origem,
@@ -73,7 +75,7 @@ namespace GerenciamentoFinanceiro.Application.Services
             if (receita != null)
             {
                 receita.Valor = receitaDTO.Valor;
-                receita.Fonte = receitaDTO.Fonte;
+                receita.Categoria = receitaDTO.Categoria;
                 receita.FormaDePagamento = receitaDTO.FormaDePagamento;
                 receita.Origem = receitaDTO.Origem;
                 receita.Natureza = receitaDTO.Natureza;

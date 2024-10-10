@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.Domain.Enums
 {
-    public enum StatusDespesa
+    public enum NaturezaEnum
     {
-        Pendente,
-        Pago,
-        EmNegociacao
+        Recorrente,
+        NaoRecorrente
     }
 }

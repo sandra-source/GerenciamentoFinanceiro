@@ -8,7 +8,11 @@ const GridView = () => {
     const dispatch = useDispatch();
     const despesas = useSelector((state) => state.despesas || []);
     const receitas = useSelector((state) => state.receitas || []);
-    const transacoes = [...despesas, ...receitas];
+
+    var transacoes = [...despesas, ...receitas].filter(
+      (item, index, self) =>
+          index === self.findIndex((t) => t.id === item.id && t.tipo === item.tipo)
+    );
 
     const [ordenacaoValor, setOrdenacaoValor] = useState('');
     const [ordenacaoVencimento, setOrdenacaoVencimento] = useState('');
@@ -16,9 +20,30 @@ const GridView = () => {
     const [status, setStatus] = useState('');
 
     const aplicarFiltros = () => {
-        dispatch(filtrarTransacoes({ ordenacaoValor, ordenacaoVencimento, tipo, status }));
+      dispatch(filtrarTransacoes({ ordenacaoValor, ordenacaoVencimento, tipo, status }));
     };
 
+    if (ordenacaoValor) {
+      transacoes = transacoes.sort((a, b) => {
+          if (ordenacaoValor === 'crescente') {
+              return a.valor - b.valor;
+          } else {
+              return b.valor - a.valor;
+          }
+      });
+  }
+  
+  if (ordenacaoVencimento) {
+      transacoes = transacoes.sort((a, b) => {
+          const dataA = new Date(a.dataVencimento);
+          const dataB = new Date(b.dataVencimento);
+          if (ordenacaoVencimento === 'crescente') {
+              return dataA - dataB;
+          } else {
+              return dataB - dataA;
+          }
+      });
+  }
     const handleLogout = () => {
         window.location.href = '/';
         sessionStorage.setItem("Token", "");
