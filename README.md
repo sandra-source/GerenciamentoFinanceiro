@@ -10,11 +10,13 @@ npm install react-redux
 
 npm install redux-thunk
 
-npm install react-icons --legacy-peer-deps
+npm install react-icons
 
 **npm i semantic-ui-css --save Redux Logger
 
 **npm i redux-logger --save Possível ver os states no console.
+
+_caso qualquer comando não seja executado, por qualquer erro, basta adicionar `--legacy-peer-deps ao comando`, e então ele será executado_
 
 # Dependências Backend
 
