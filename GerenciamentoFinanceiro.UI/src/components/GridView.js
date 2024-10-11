@@ -36,7 +36,6 @@ const GridView = () => {
     const [descricaoParaExcluir, setDescricaoParaExcluir] = useState('');
     const [mostrarNovoComponente, setMostrarNovoComponente] = useState(true);
 
-    // Estados temporários para os filtros
     const [filtroOrdenacaoValor, setFiltroOrdenacaoValor] = useState('');
     const [filtroOrdenacaoVencimento, setFiltroOrdenacaoVencimento] = useState('');
     const [filtroTipo, setFiltroTipo] = useState('');

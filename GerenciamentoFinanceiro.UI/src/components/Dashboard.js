@@ -1,69 +1,80 @@
 import React from 'react';
-import { Line, Pie, Bar } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    ArcElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 import '../css/dashboard.css';
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    BarElement,
-    ArcElement,
-    Title,
-    Tooltip,
-    Legend
-);
-
 const Dashboard = () => {
-    const lineData = {
-        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        datasets: [
-            {
-                label: 'Receitas',
-                data: [1200, 1900, 3000, 5000, 2300, 3200, 2100, 1500, 4000, 2900, 3700, 4200],
-                borderColor: '#4bc0c0',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.3,
-                pointBackgroundColor: '#4bc0c0',
-            },
-        ],
+    const lineOptions = {
+        chart:{
+            width: 800,
+            height: 300 
+        },
+        title: {
+            text: 'Receitas Mensais'
+        },
+        xAxis: {
+            categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        },
+        series: [{
+            name: 'Receitas',
+            data: [1200, 1900, 3000, 5000, 2300, 3200, 2100, 1500, 4000, 2900, 3700, 4200],
+            type: 'line'
+        }]
     };
 
-    const pieData = {
-        labels: ['Vendas', 'Serviços', 'Outros'],
-        datasets: [
-            {
-                data: [4000, 3000, 2000],
-                backgroundColor: ['#36a2eb', '#ff6384', '#ffcd56'],
-                hoverBackgroundColor: ['#36a2eb', '#ff6384', '#ffcd56'],
-            },
-        ],
+    const barOptions = {
+        chart:{
+            width: 800,
+            height: 300 
+        },
+        title: {
+            text: 'Despesas Totais'
+        },
+        xAxis: {
+            categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        },
+        series: [{
+            name: 'Despesas',
+            data: [1500, 2500, 1000, 4000, 2000, 3500, 1200, 1000, 3000, 2800, 3300, 4100],
+            type: 'column'
+        }]
     };
 
-    const barData = {
-        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        datasets: [
-            {
-                label: 'Despesas',
-                data: [1500, 2500, 1000, 4000, 2000, 3500, 1200, 1000, 3000, 2800, 3300, 4100],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-            },
-        ],
+    const pieOptions = {
+        chart:{
+            width: 800,
+            height: 300 
+        },
+        title: {
+            text: 'Distribuição de Receitas'
+        },
+        series: [{
+            name: 'Receitas',
+            data: [
+                { name: 'Vendas', y: 4000 },
+                { name: 'Serviços', y: 3000 },
+                { name: 'Outros', y: 2000 }
+            ],
+            type: 'pie'
+        }]
+    };
+
+    const transactionsOptions = {
+        chart:{
+            width: 800,
+            height: 300 
+        },
+        title: {
+            text: 'Transações por Mês'
+        },
+        xAxis: {
+            categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio']
+        },
+        series: [{
+            name: 'Número de Transações',
+            data: [30, 50, 40, 60, 70],
+            type: 'bar'
+        }]
     };
 
     return (
@@ -71,18 +82,30 @@ const Dashboard = () => {
             <h2>Dashboard de Despesas e Receitas</h2>
             <div className="charts-row">
                 <div className="chart-container">
-                    <h3>Receitas Mensais</h3>
-                    <Line data={lineData} />
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={lineOptions}
+                    />
                 </div>
                 <div className="chart-container">
-                    <h3>Despesas Totais</h3>
-                    <Bar data={barData} />
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={barOptions}
+                    />
                 </div>
             </div>
             <div className="charts-row">
                 <div className="chart-container">
-                    <h3>Distribuição de Receitas</h3>
-                    <Pie data={pieData} />
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={pieOptions}
+                    />
+                </div>
+                <div className="chart-container">
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={transactionsOptions}
+                    />
                 </div>
             </div>
         </div>
