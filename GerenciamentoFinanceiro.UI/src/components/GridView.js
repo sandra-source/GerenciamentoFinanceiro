@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
 import { FaSignOutAlt, FaEdit, FaTrash } from 'react-icons/fa';
 import ModalTransacao from './ModalTransacao.js';
-import { adicionarTransacao, editarTransacao, buscarTransacaoPorId } from '../services/transacaoService.js';
+import ConfirmacaoModal from './ConfirmacaoModal.js'; 
+import { adicionarTransacao, editarTransacao, buscarTransacaoPorId, excluirTransacao } from '../services/transacaoService.js';
 import '../css/gridView.css';
 
 const Status = {
@@ -29,7 +30,15 @@ const GridView = () => {
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isConfirmacaoOpen, setConfirmacaoOpen] = useState(false);
     const [transacaoAtual, setTransacaoAtual] = useState(null);
+    const [descricaoParaExcluir, setDescricaoParaExcluir] = useState('');
+
+    // Estados temporários para os filtros
+    const [filtroOrdenacaoValor, setFiltroOrdenacaoValor] = useState('');
+    const [filtroOrdenacaoVencimento, setFiltroOrdenacaoVencimento] = useState('');
+    const [filtroTipo, setFiltroTipo] = useState('');
+    const [filtroStatus, setFiltroStatus] = useState('');
 
     const handleOpenModal = () => setModalOpen(true);
     const handleCloseModal = () => {
@@ -44,7 +53,7 @@ const GridView = () => {
             } else {
                 await adicionarTransacao(novaTransacao);
             }
-            aplicarFiltros();
+            aplicarFiltros(); // Atualiza a lista após adicionar/editar
         } catch (error) {
             console.error("Erro ao salvar transação:", error);
         } finally {
@@ -62,18 +71,38 @@ const GridView = () => {
         }
     };
 
-    const handleDelete = (id) => {
-        console.log("Excluir transação:", id);
+    const handleDelete = (id, descricao) => {
+        setTransacaoAtual({ id });
+        setDescricaoParaExcluir(descricao);
+        setConfirmacaoOpen(true);
     };
 
-    useEffect(() => {
-        aplicarFiltros();
-    }, [tipo, status, ordenacaoValor, ordenacaoVencimento]);
+    const confirmarExclusao = async () => {
+        try {
+            await excluirTransacao(transacaoAtual.id);
+            aplicarFiltros(); // Atualiza a lista após excluir
+        } catch (error) {
+            console.error("Erro ao excluir transação:", error);
+        } finally {
+            setConfirmacaoOpen(false);
+        }
+    };
 
     const aplicarFiltros = () => {
         setIsLoading(true);
-        dispatch(filtrarTransacoes({ ordenacaoValor, ordenacaoVencimento, tipo, status }))
-            .finally(() => setIsLoading(false));
+        // Aplicar os filtros usando os valores dos estados temporários
+        dispatch(filtrarTransacoes({ 
+            ordenacaoValor: filtroOrdenacaoValor, 
+            ordenacaoVencimento: filtroOrdenacaoVencimento, 
+            tipo: filtroTipo, 
+            status: filtroStatus 
+        })).finally(() => setIsLoading(false));
+
+        // Atualizar os estados dos filtros com os valores temporários
+        setOrdenacaoValor(filtroOrdenacaoValor);
+        setOrdenacaoVencimento(filtroOrdenacaoVencimento);
+        setTipo(filtroTipo);
+        setStatus(filtroStatus);
     };
 
     const ordenarTransacoes = (transacoes) => {
@@ -107,6 +136,11 @@ const GridView = () => {
         sessionStorage.setItem("Token", "");
     };
 
+    // useEffect para carregar os dados inicialmente
+    useEffect(() => {
+        aplicarFiltros();
+    }, []); // O array vazio faz com que o efeito seja executado apenas na montagem do componente
+
     return (
         <>
             <ModalTransacao 
@@ -114,6 +148,12 @@ const GridView = () => {
                 onClose={handleCloseModal} 
                 onSubmit={handleNewTransaction}
                 transacao={transacaoAtual}
+            />
+            <ConfirmacaoModal 
+                isOpen={isConfirmacaoOpen}
+                onClose={() => setConfirmacaoOpen(false)}
+                onConfirm={confirmarExclusao}
+                descricao={descricaoParaExcluir}
             />
             <div className="grid-view-container">
                 <nav className="navbar">
@@ -131,7 +171,7 @@ const GridView = () => {
                         <h3>Filtros</h3>
                         <div className="filter-item">
                             <label>Tipo:</label>
-                            <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+                            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
                                 <option value="">Todos</option>
                                 <option value="Receita">Receita</option>
                                 <option value="Despesa">Despesa</option>
@@ -139,7 +179,7 @@ const GridView = () => {
                         </div>
                         <div className="filter-item">
                             <label>Status:</label>
-                            <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                            <select value={filtroStatus} onChange={(e) => setFiltroStatus(e.target.value)}>
                                 <option value="">Todos</option>
                                 <option value="Pago">Pago</option>
                                 <option value="Pendente">Pendente</option>
@@ -148,7 +188,7 @@ const GridView = () => {
                         </div>
                         <div className="filter-item">
                             <label>Ordenar por Valor:</label>
-                            <select value={ordenacaoValor} onChange={(e) => setOrdenacaoValor(e.target.value)}>
+                            <select value={filtroOrdenacaoValor} onChange={(e) => setFiltroOrdenacaoValor(e.target.value)}>
                                 <option value="">Selecione</option>
                                 <option value="crescente">Crescente</option>
                                 <option value="decrescente">Decrescente</option>
@@ -156,7 +196,7 @@ const GridView = () => {
                         </div>
                         <div className="filter-item">
                             <label>Ordenar por Vencimento:</label>
-                            <select value={ordenacaoVencimento} onChange={(e) => setOrdenacaoVencimento(e.target.value)}>
+                            <select value={filtroOrdenacaoVencimento} onChange={(e) => setFiltroOrdenacaoVencimento(e.target.value)}>
                                 <option value="">Selecione</option>
                                 <option value="crescente">Crescente</option>
                                 <option value="decrescente">Decrescente</option>
@@ -207,7 +247,7 @@ const GridView = () => {
                                                     title="Editar"
                                                 />
                                                 <FaTrash
-                                                    onClick={() => handleDelete(item.id)}
+                                                    onClick={() => handleDelete(item.id, item.descricao)}
                                                     className="icon-action icon-delete"
                                                     title="Excluir"
                                                 />

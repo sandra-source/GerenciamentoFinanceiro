@@ -39,3 +39,13 @@ export const buscarTransacaoPorId = async (id) => {
         throw error;
     }
 };
+
+export const excluirTransacao = async (id) => {
+    try {
+        const response = await api.delete(`/transacao/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao excluir transação:', error);
+        throw error;
+    }
+};

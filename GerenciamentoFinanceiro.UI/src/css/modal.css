@@ -96,9 +96,24 @@ body {
 }
 
 .margin010 {
-    margin: 0 10px;
+    margin: 0 10px !important;
+}
+
+
+.margin05 {
+    margin: 0 5px !important;
 }
 
 form {
     margin-left: 7%;
 }
+
+.cancelar-btn {
+    background-color: #e0e0e0 !important;
+    color: #333 !important;
+}
+
+.cancelar-btn:hover {
+    background-color: #d0d0d0 !important; 
+}
+

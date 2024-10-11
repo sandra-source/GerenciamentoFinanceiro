@@ -1,58 +1,67 @@
-
 import React, { useState, useEffect } from 'react';
 import '../css/modal.css';
 
+const Status = {
+    0: 'Recebido',
+    1: 'A Receber',
+    2: 'Pendente',
+    3: 'Pago',
+    4: 'Em Negociação',
+};
+
 const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
-    const [id, setId] = useState(null);
     const [descricao, setDescricao] = useState('');
     const [valor, setValor] = useState('');
-    const [tipo, setTipo] = useState(0);
-    const [status, setStatus] = useState(2);
     const [categoria, setCategoria] = useState('');
     const [origem, setOrigem] = useState('');
     const [formaDePagamento, setFormaDePagamento] = useState('');
     const [dataVencimento, setDataVencimento] = useState('');
+    const [tipo, setTipo] = useState(0); // Receita como padrão
+    const [status, setStatus] = useState(2); // Pendente como padrão
 
     useEffect(() => {
         if (transacao) {
-            setId(transacao.id || null);
-            setDescricao(transacao.descricao);
-            setValor(transacao.valor);
+            setDescricao(transacao.descricao || '');
+            setValor(transacao.valor || '');
+            setCategoria(transacao.categoria || '');
+            setOrigem(transacao.origem || '');
+            setFormaDePagamento(transacao.formaDePagamento || '');
+            setDataVencimento(transacao.dataVencimento ? new Date(transacao.dataVencimento).toISOString().split('T')[0] : '');
             setTipo(transacao.tipo);
             setStatus(transacao.status);
-            setCategoria(transacao.categoria);
-            setOrigem(transacao.origem);
-            setFormaDePagamento(transacao.formaDePagamento);
-            setDataVencimento(transacao.dataVencimento ? new Date(transacao.dataVencimento).toISOString().slice(0, 10) : '');
-        } else if (isOpen) {
-            setId(null);
-            setDescricao('');
-            setValor('');
-            setTipo(0);
-            setStatus(2);
-            setCategoria('');
-            setOrigem('');
-            setFormaDePagamento('');
-            setDataVencimento('');
+        } else {
+            resetForm();
         }
-    }, [transacao, isOpen]);
+    }, [transacao]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const novaTransacao = {
-            id, // Inclui o ID na transação
+            id: transacao ? transacao.id : null,
             descricao,
             valor: parseFloat(valor),
-            tipo,
-            status,
             categoria,
             origem,
             formaDePagamento,
             dataVencimento: dataVencimento ? new Date(dataVencimento).toISOString() : null,
+            tipo: parseInt(tipo),
+            status: parseInt(status),
         };
-
         onSubmit(novaTransacao);
     };
+
+    const resetForm = () => {
+        setDescricao('');
+        setValor('');
+        setCategoria('');
+        setOrigem('');
+        setFormaDePagamento('');
+        setDataVencimento('');
+        setTipo(0);
+        setStatus(2);
+    };
+
+    if (!isOpen) return null;
 
     return (
         <div className={`modal-overlay ${isOpen ? 'open' : ''}`}>
@@ -79,21 +88,18 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
                         placeholder="Categoria" 
                         value={categoria}
                         onChange={(e) => setCategoria(e.target.value)} 
-                        required 
                     />
                     <input 
                         type="text" 
                         placeholder="Origem" 
                         value={origem}
                         onChange={(e) => setOrigem(e.target.value)} 
-                        required 
                     />
                     <input 
                         type="text" 
                         placeholder="Forma de Pagamento" 
                         value={formaDePagamento}
                         onChange={(e) => setFormaDePagamento(e.target.value)} 
-                        required 
                     />
                     <input 
                         type="date" 
@@ -114,13 +120,13 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
                         onChange={(e) => setStatus(parseInt(e.target.value))} 
                         required
                     >
-                        <option value={2}>Pendente</option>
-                        <option value={3}>Pago</option>
-                        <option value={4}>Em Negociação</option>
+                        {Object.keys(Status).map((key) => (
+                            <option key={key} value={key}>{Status[key]}</option>
+                        ))}
                     </select>
                     <div>
-                        <button className="margin010" type="submit">Salvar</button>
-                        <button className="margin010" type="button" onClick={onClose}>Fechar</button>
+                        <button class="margin05" type="submit">Salvar</button>
+                        <button class="margin05" type="button" onClick={onClose}>Fechar</button>
                     </div>
                 </form>
             </div>
