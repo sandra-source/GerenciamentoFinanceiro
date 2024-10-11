@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HeaderOptions from './components/HeaderOptions';
 import Login from './components/Login';
 import GridView from './components/GridView';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './components/Dashboard';
 import './css/styles.css'; 
 
 function App() {
