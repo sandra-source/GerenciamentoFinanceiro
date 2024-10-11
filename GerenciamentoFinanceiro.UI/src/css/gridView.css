@@ -106,6 +106,11 @@ table tr:last-child td {
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
+
+.navbar a {
+    cursor: pointer;
+}
+
 .navbar li:hover {
     transform: scale(1.1) !important;
     color: #e0e0e0;
@@ -178,4 +183,30 @@ table tr:last-child td {
     background-position: right 10px top 50%;
     background-size: 10px 10px;
     padding-right: 30px; /* Espaço extra para a seta */
+}
+
+/* Estilos para os ícones de edição e exclusão */
+.icon-action {
+    cursor: pointer;
+    margin: 0 3px;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Ícone de exclusão (lixeira) em vermelho */
+.icon-delete {
+    color: red;
+}
+
+.icon-delete:hover {
+    transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
+}
+
+/* Ícone de edição com cor escolhida (azul escuro neste exemplo) */
+.icon-edit {
+    color: #007bff; /* Azul escuro */
+}
+
+.icon-edit:hover {
+    transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
+    color: #0056b3; /* Azul mais escuro ao passar o mouse */
 }

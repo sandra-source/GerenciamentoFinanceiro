@@ -12,13 +12,11 @@ namespace GerenciamentoFinanceiro.Application.Services
 {
     public class RelatorioService : IRelatorioService
     {
-        private readonly IDespesaRepository _despesaRepository;
-        private readonly IReceitaRepository _receitaRepository;
+        private readonly ITransacaoRepository _transacaoRepository;
 
-        public RelatorioService(IDespesaRepository despesaRepository, IReceitaRepository receitaRepository)
+        public RelatorioService(ITransacaoRepository transacaoRepository)
         {
-            _despesaRepository = despesaRepository;
-            _receitaRepository = receitaRepository;
+            _transacaoRepository = transacaoRepository;
         }
 
         public async Task<RelatorioGeradoDTO> GerarRelatorioAsync(DateTime dataInicio, DateTime dataFim, string categoria = null)

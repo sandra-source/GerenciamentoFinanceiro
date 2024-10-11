@@ -1,149 +1,213 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { FaSignOutAlt, FaEdit, FaTrash } from 'react-icons/fa'; // Importa os ícones necessários
+import ModalTransacao from './ModalTransacao.js';
+import { adicionarTransacao } from '../services/transacaoService.js';
 import '../css/gridView.css';
+
+const Status = {
+    0: 'Recebido',
+    1: 'A Receber',
+    2: 'Pendente',
+    3: 'Pago',
+    4: 'Em Negociação',
+};
+
+const TipoTransacao = {
+    0: 'Receita',
+    1: 'Despesa',
+};
 
 const GridView = () => {
     const dispatch = useDispatch();
-    const despesas = useSelector((state) => state.despesas || []);
-    const receitas = useSelector((state) => state.receitas || []);
-
-    var transacoes = [...despesas, ...receitas].filter(
-      (item, index, self) =>
-          index === self.findIndex((t) => t.id === item.id && t.tipo === item.tipo)
-    );
+    const transacoes = useSelector((state) => state.transacoes.transacoes || []);
 
     const [ordenacaoValor, setOrdenacaoValor] = useState('');
     const [ordenacaoVencimento, setOrdenacaoVencimento] = useState('');
     const [tipo, setTipo] = useState('');
     const [status, setStatus] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [isModalOpen, setModalOpen] = useState(false);
 
-    const aplicarFiltros = () => {
-      dispatch(filtrarTransacoes({ ordenacaoValor, ordenacaoVencimento, tipo, status }));
+    const handleOpenModal = () => setModalOpen(true);
+    const handleCloseModal = () => setModalOpen(false);
+
+    const handleNewTransaction = async (novaTransacao) => {
+        try {
+            await adicionarTransacao(novaTransacao);
+            aplicarFiltros(); // Atualiza a lista de transações após adicionar
+        } catch (error) {
+            console.error("Erro ao adicionar transação:", error);
+        } finally {
+            handleCloseModal();
+        }
     };
 
-    if (ordenacaoValor) {
-      transacoes = transacoes.sort((a, b) => {
-          if (ordenacaoValor === 'crescente') {
-              return a.valor - b.valor;
-          } else {
-              return b.valor - a.valor;
-          }
-      });
-  }
-  
-  if (ordenacaoVencimento) {
-      transacoes = transacoes.sort((a, b) => {
-          const dataA = new Date(a.dataVencimento);
-          const dataB = new Date(b.dataVencimento);
-          if (ordenacaoVencimento === 'crescente') {
-              return dataA - dataB;
-          } else {
-              return dataB - dataA;
-          }
-      });
-  }
+    const handleEdit = (id) => {
+        // Lógica para editar a transação com o ID fornecido
+        console.log("Editar transação:", id);
+    };
+
+    const handleDelete = (id) => {
+        // Lógica para excluir a transação com o ID fornecido
+        console.log("Excluir transação:", id);
+    };
+
+    useEffect(() => {
+        aplicarFiltros();
+    }, [tipo, status, ordenacaoValor, ordenacaoVencimento]);
+
+    const aplicarFiltros = () => {
+        setIsLoading(true); // Começa o carregamento
+        dispatch(filtrarTransacoes({ ordenacaoValor, ordenacaoVencimento, tipo, status }))
+            .finally(() => setIsLoading(false)); // Para o carregamento ao final
+    };
+
+    const ordenarTransacoes = (transacoes) => {
+        if (!Array.isArray(transacoes)) {
+            console.error('Erro: transacoes não é um array', transacoes);
+            return []; // Retorne um array vazio
+        }
+
+        let sortedTransacoes = [...transacoes];
+
+        if (ordenacaoValor) {
+            sortedTransacoes.sort((a, b) =>
+                ordenacaoValor === 'crescente' ? a.valor - b.valor : b.valor - a.valor
+            );
+        }
+
+        if (ordenacaoVencimento) {
+            sortedTransacoes.sort((a, b) => {
+                const dataA = new Date(a.dataVencimento);
+                const dataB = new Date(b.dataVencimento);
+                return ordenacaoVencimento === 'crescente' ? dataA - dataB : dataB - dataA;
+            });
+        }
+        return sortedTransacoes;
+    };
+
+    const transacoesOrdenadas = ordenarTransacoes(transacoes);
+
     const handleLogout = () => {
         window.location.href = '/';
         sessionStorage.setItem("Token", "");
     };
 
     return (
-        <div className="grid-view-container">
-            <nav className="navbar">
-                <ul>
-                    <li><a href="/cadastrar-despesa">Cadastrar Despesa</a></li>
-                    <li><a href="/cadastrar-receita">Cadastrar Receita</a></li>
-                    <li><a href="/meus-relatorios">Meus Relatórios</a></li>
-                    <li><a href="/dashboard">Meu Dashboard</a></li>
-                </ul>
-                <div className="logout-icon" onClick={handleLogout}>
-                    <FaSignOutAlt size={24} title="Logout" />
-                </div>
-            </nav>
-            <div className="main-content">
-                <div className="filters-container">
-                    <h3>Filtros</h3>
-                    <div className="filter-item">
-                        <label>Tipo:</label>
-                        <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-                            <option value="">Todos</option>
-                            <option value="Despesa">Despesa</option>
-                            <option value="Receita">Receita</option>
-                        </select>
+        <>
+            <ModalTransacao isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleNewTransaction} />
+            <div className="grid-view-container">
+                <nav className="navbar">
+                    <ul>
+                        <li><a onClick={handleOpenModal}>Cadastrar Transação</a></li>
+                        <li><a href="/meus-relatorios">Meus Relatórios</a></li>
+                        <li><a href="/dashboard">Meu Dashboard</a></li>
+                    </ul>
+                    <div className="logout-icon" onClick={handleLogout}>
+                        <FaSignOutAlt size={24} title="Logout" />
                     </div>
-                    <div className="filter-item">
-                        <label>Status:</label>
-                        <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                            <option value="">Todos</option>
-                            <option value="Pago">Pago</option>
-                            <option value="Pendente">Pendente</option>
-                            <option value="EmNegociacao">Em Negociação</option>
-                        </select>
+                </nav>
+                <div className="main-content">
+                    <div className="filters-container">
+                        <h3>Filtros</h3>
+                        <div className="filter-item">
+                            <label>Tipo:</label>
+                            <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
+                                <option value="">Todos</option>
+                                <option value="Receita">Receita</option>
+                                <option value="Despesa">Despesa</option>
+                            </select>
+                        </div>
+                        <div className="filter-item">
+                            <label>Status:</label>
+                            <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                                <option value="">Todos</option>
+                                <option value="Pago">Pago</option>
+                                <option value="Pendente">Pendente</option>
+                                <option value="EmNegociacao">Em Negociação</option>
+                            </select>
+                        </div>
+                        <div className="filter-item">
+                            <label>Ordenar por Valor:</label>
+                            <select value={ordenacaoValor} onChange={(e) => setOrdenacaoValor(e.target.value)}>
+                                <option value="">Selecione</option>
+                                <option value="crescente">Crescente</option>
+                                <option value="decrescente">Decrescente</option>
+                            </select>
+                        </div>
+                        <div className="filter-item">
+                            <label>Ordenar por Vencimento:</label>
+                            <select value={ordenacaoVencimento} onChange={(e) => setOrdenacaoVencimento(e.target.value)}>
+                                <option value="">Selecione</option>
+                                <option value="crescente">Crescente</option>
+                                <option value="decrescente">Decrescente</option>
+                            </select>
+                        </div>
+                        <button className="apply-filters-button" onClick={aplicarFiltros}>
+                            Aplicar Filtros
+                        </button>
                     </div>
-                    <div className="filter-item">
-                        <label>Ordenar por Valor:</label>
-                        <select value={ordenacaoValor} onChange={(e) => setOrdenacaoValor(e.target.value)}>
-                            <option value="">Selecione</option>
-                            <option value="crescente">Crescente</option>
-                            <option value="decrescente">Decrescente</option>
-                        </select>
-                    </div>
-                    <div className="filter-item">
-                        <label>Ordenar por Vencimento:</label>
-                        <select value={ordenacaoVencimento} onChange={(e) => setOrdenacaoVencimento(e.target.value)}>
-                            <option value="">Selecione</option>
-                            <option value="crescente">Crescente</option>
-                            <option value="decrescente">Decrescente</option>
-                        </select>
-                    </div>
-                    <button className="apply-filters-button" onClick={aplicarFiltros}>
-                        Aplicar Filtros
-                    </button>
-                </div>
-                <div className="grid-view">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Descrição</th>
-                                <th>Valor</th>
-                                <th>Vencimento</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transacoes.length > 0 ? (
-                                transacoes.map((item) => (
-                                    <tr key={item.id}>
-                                        <td>{item.tipo}</td>
-                                        <td>{item.descricao}</td>
-                                        <td>{item.valor}</td>
-                                        <td>
-                                            {new Date(item.dataVencimento).toLocaleDateString('pt-BR', {
-                                                day: '2-digit',
-                                                month: '2-digit',
-                                                year: 'numeric'
-                                            })}
-                                        </td>
-                                        <td>
-                                            {item.status === 0 ? 'Pendente' : 
-                                            item.status === 1 ? 'Pago' : 
-                                            item.status === 2 ? 'Em Negociação' : 'N/A'}
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className="grid-view">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td colSpan="5">Nenhuma transação encontrada</td>
+                                    <th>Tipo</th>
+                                    <th>Descrição</th>
+                                    <th>Valor (R$)</th>
+                                    <th>Forma de pagamento</th>
+                                    <th>Vencimento</th>
+                                    <th>Status</th>
+                                    <th>Ações</th> {/* Nova coluna para ações */}
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {isLoading ? (
+                                    <tr>
+                                        <td colSpan="7">Carregando...</td>
+                                    </tr>
+                                ) : transacoesOrdenadas.length > 0 ? (
+                                    transacoesOrdenadas.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>{TipoTransacao[item.tipo] || 'N/A'}</td>
+                                            <td>{item.descricao}</td>
+                                            <td>{item.valor}</td>
+                                            <td>{item.formaDePagamento}</td>
+                                            <td>
+                                                {item.dataVencimento ?
+                                                    new Date(item.dataVencimento).toLocaleDateString('pt-BR', {
+                                                        day: '2-digit',
+                                                        month: '2-digit',
+                                                        year: 'numeric'
+                                                    }) : 'N/A'}
+                                            </td>
+                                            <td>{Status[item.status] || 'N/A'}</td>
+                                            <td>
+                                                <FaEdit 
+                                                    onClick={() => handleEdit(item.id)}
+                                                    className="icon-action icon-edit"
+                                                    title="Editar"
+                                                />
+                                                <FaTrash
+                                                    onClick={() => handleDelete(item.id)}
+                                                    className="icon-action icon-delete"
+                                                    title="Excluir"
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7">Nenhuma transação encontrada</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

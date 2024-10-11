@@ -1,0 +1,104 @@
+.modal.open {
+    display: block;
+    text-align: center; 
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 999; 
+}
+
+.modal-overlay.open {
+    display: flex; 
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000; 
+    width: 400px; 
+}
+
+.modal h2 {
+    color: #007bff; 
+    margin-bottom: 15px;
+}
+
+.modal input,
+.modal select {
+    width: 100%; 
+    padding: 10px;
+    margin: 10px 0; 
+    border: 1px solid #007bff; 
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+.modal button {
+    background-color: #007bff; 
+    color: #ffffff; 
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal button:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+.close {
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    background-color: transparent !important;
+    border: none;
+    font-size: 20px;
+    color: #007BFF !important;
+    cursor: pointer;
+}
+
+.close {
+    margin-top: -10px;
+    margin-right: 10px; /* Adiciona espaço entre o botão de fechar e a borda */
+}
+
+.close:hover {
+    transform: scale(1.4); /* Aumenta o tamanho ao passar o mouse */
+}
+
+.modal button[type="button"] {
+    background-color: #e0e0e0; /* Cor de fundo para o botão "Fechar" */
+    color: #333; /* Cor do texto */
+}
+
+.modal button[type="button"]:hover {
+    background-color: #d0d0d0; 
+}
+
+body {
+    background-color: #1c1c1c !important; 
+}
+
+.margin010 {
+    margin: 0 10px;
+}
+
+form {
+    margin-left: 7%;
+}

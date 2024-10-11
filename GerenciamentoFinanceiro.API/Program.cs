@@ -16,21 +16,17 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Injetar os DbContexts usando a mesma conexão para o banco de dados PostgreSQL
 builder.Services.AddDbContext<UsuariosDbContext>(options =>
     options.UseNpgsql(connectionString));
-builder.Services.AddDbContext<DespesasDbContext>(options =>
-    options.UseNpgsql(connectionString));
-builder.Services.AddDbContext<ReceitasDbContext>(options =>
+builder.Services.AddDbContext<TransacoesDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // Injetar os repositórios da camada de infraestrutura (camada de Infrastructure)
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IDespesaRepository, DespesaRepository>();
-builder.Services.AddScoped<IReceitaRepository, ReceitaRepository>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 
 // Injetar os serviços da camada de aplicação (camada de Application)
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRelatorioService, RelatorioService>();
-builder.Services.AddScoped<IReceitaService, ReceitaService>();
-builder.Services.AddScoped<IDespesaService, DespesaService>();
+builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 // Outros serviços podem ser registrados aqui
 
 // Configurar autenticação e JWT
