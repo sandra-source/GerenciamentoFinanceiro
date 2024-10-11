@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../css/relatorioView.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
 import { FaSignOutAlt, FaHome, FaFilePdf, FaFileExcel } from 'react-icons/fa';
@@ -181,12 +182,12 @@ const RelatoriosView = () => {
                         <button className="apply-filters-button" onClick={aplicarFiltros}>
                             Aplicar Filtros
                         </button>
-                        <button className="export-button" onClick={handleExportPdf}>
-                            <FaFilePdf /> Exportar em PDF
-                        </button>
-                        <button className="export-button">
-                            <FaFileExcel /> Exportar em Excel
-                        </button>
+                        <button className="export-button pdf" onClick={handleExportPdf}>
+        <FaFilePdf /> Exportar em PDF
+    </button>
+    <button className="export-button excel" onClick={handleExportExcel}>
+        <FaFileExcel /> Exportar em Excel
+    </button>
                     </div>
                     <div className="grid-view">
                         <table>

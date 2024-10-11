@@ -30,12 +30,9 @@ export const exportToPdf = (data) => {
     doc.save(`relatorio_transacoes_${new Date().toISOString().slice(0, 10)}.pdf`);
 };
 
-// Função para exportar em Excel
 export const exportToExcel = (data) => {
-    // Criar uma nova planilha com os dados
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Relatório");
-    // Salvar o arquivo Excel
     XLSX.writeFile(workbook, `relatorio_transacoes_${new Date().toISOString().slice(0, 10)}.xlsx`);
 };
