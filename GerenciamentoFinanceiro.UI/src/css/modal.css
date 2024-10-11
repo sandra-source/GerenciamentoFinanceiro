@@ -59,7 +59,7 @@
 }
 
 .modal button:hover {
-    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+    background-color: #0056b3; 
 }
 
 .close {
@@ -75,16 +75,16 @@
 
 .close {
     margin-top: -10px;
-    margin-right: 10px; /* Adiciona espaço entre o botão de fechar e a borda */
+    margin-right: 10px; 
 }
 
 .close:hover {
-    transform: scale(1.4); /* Aumenta o tamanho ao passar o mouse */
+    transform: scale(1.4); 
 }
 
 .modal button[type="button"] {
-    background-color: #e0e0e0; /* Cor de fundo para o botão "Fechar" */
-    color: #333; /* Cor do texto */
+    background-color: #e0e0e0; 
+    color: #333; 
 }
 
 .modal button[type="button"]:hover {

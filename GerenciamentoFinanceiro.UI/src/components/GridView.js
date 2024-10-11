@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
-import { FaSignOutAlt, FaEdit, FaTrash } from 'react-icons/fa'; // Importa os ícones necessários
+import { FaSignOutAlt, FaEdit, FaTrash } from 'react-icons/fa';
 import ModalTransacao from './ModalTransacao.js';
-import { adicionarTransacao } from '../services/transacaoService.js';
+import { adicionarTransacao, editarTransacao, buscarTransacaoPorId } from '../services/transacaoService.js';
 import '../css/gridView.css';
 
 const Status = {
@@ -29,28 +29,40 @@ const GridView = () => {
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [transacaoAtual, setTransacaoAtual] = useState(null);
 
     const handleOpenModal = () => setModalOpen(true);
-    const handleCloseModal = () => setModalOpen(false);
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setTransacaoAtual(null);
+    };
 
     const handleNewTransaction = async (novaTransacao) => {
         try {
-            await adicionarTransacao(novaTransacao);
-            aplicarFiltros(); // Atualiza a lista de transações após adicionar
+            if (transacaoAtual) {
+                await editarTransacao(novaTransacao.id, novaTransacao); 
+            } else {
+                await adicionarTransacao(novaTransacao);
+            }
+            aplicarFiltros();
         } catch (error) {
-            console.error("Erro ao adicionar transação:", error);
+            console.error("Erro ao salvar transação:", error);
         } finally {
             handleCloseModal();
         }
     };
 
-    const handleEdit = (id) => {
-        // Lógica para editar a transação com o ID fornecido
-        console.log("Editar transação:", id);
+    const handleEdit = async (id) => {
+        try {
+            const transacao = await buscarTransacaoPorId(id);
+            setTransacaoAtual(transacao);
+            handleOpenModal();
+        } catch (error) {
+            console.error("Erro ao buscar transação para edição:", error);
+        }
     };
 
     const handleDelete = (id) => {
-        // Lógica para excluir a transação com o ID fornecido
         console.log("Excluir transação:", id);
     };
 
@@ -59,15 +71,15 @@ const GridView = () => {
     }, [tipo, status, ordenacaoValor, ordenacaoVencimento]);
 
     const aplicarFiltros = () => {
-        setIsLoading(true); // Começa o carregamento
+        setIsLoading(true);
         dispatch(filtrarTransacoes({ ordenacaoValor, ordenacaoVencimento, tipo, status }))
-            .finally(() => setIsLoading(false)); // Para o carregamento ao final
+            .finally(() => setIsLoading(false));
     };
 
     const ordenarTransacoes = (transacoes) => {
         if (!Array.isArray(transacoes)) {
             console.error('Erro: transacoes não é um array', transacoes);
-            return []; // Retorne um array vazio
+            return [];
         }
 
         let sortedTransacoes = [...transacoes];
@@ -97,7 +109,12 @@ const GridView = () => {
 
     return (
         <>
-            <ModalTransacao isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleNewTransaction} />
+            <ModalTransacao 
+                isOpen={isModalOpen} 
+                onClose={handleCloseModal} 
+                onSubmit={handleNewTransaction}
+                transacao={transacaoAtual}
+            />
             <div className="grid-view-container">
                 <nav className="navbar">
                     <ul>
@@ -159,7 +176,7 @@ const GridView = () => {
                                     <th>Forma de pagamento</th>
                                     <th>Vencimento</th>
                                     <th>Status</th>
-                                    <th>Ações</th> {/* Nova coluna para ações */}
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>

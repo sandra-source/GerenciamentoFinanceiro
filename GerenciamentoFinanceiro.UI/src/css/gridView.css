@@ -1,7 +1,5 @@
-/* src/css/GridView.css */
-/* src/css/GridView.css */
 html, body {
-    height: 100%; /* Garantir que o HTML e o body ocupem 100% da altura */
+    height: 100%; 
     margin: 0;
     padding: 0;
 }
@@ -16,7 +14,6 @@ html, body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between;  */
 }
 
 .navbar {
@@ -31,8 +28,8 @@ html, body {
 }
 
 .grid-view {
-    flex-grow: 1; /* Ocupa o espaço restante */
-    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+    flex-grow: 1;
+    overflow-y: auto;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -89,7 +86,7 @@ table tr:last-child td {
 
 .logout-icon {
     cursor: pointer;
-    color: white; /* Ícone branco */
+    color: white; 
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
@@ -182,31 +179,28 @@ table tr:last-child td {
     background-repeat: no-repeat;
     background-position: right 10px top 50%;
     background-size: 10px 10px;
-    padding-right: 30px; /* Espaço extra para a seta */
+    padding-right: 30px; 
 }
 
-/* Estilos para os ícones de edição e exclusão */
 .icon-action {
     cursor: pointer;
     margin: 0 3px;
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-/* Ícone de exclusão (lixeira) em vermelho */
 .icon-delete {
     color: red;
 }
 
 .icon-delete:hover {
-    transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
+    transform: scale(1.2); 
 }
 
-/* Ícone de edição com cor escolhida (azul escuro neste exemplo) */
 .icon-edit {
-    color: #007bff; /* Azul escuro */
+    color: #007bff; 
 }
 
 .icon-edit:hover {
-    transform: scale(1.2); /* Aumenta um pouco ao passar o mouse */
-    color: #0056b3; /* Azul mais escuro ao passar o mouse */
+    transform: scale(1.2); 
+    color: #0056b3; 
 }
