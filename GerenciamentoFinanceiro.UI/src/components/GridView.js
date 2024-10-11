@@ -6,6 +6,7 @@ import ModalTransacao from './ModalTransacao.js';
 import ConfirmacaoModal from './ConfirmacaoModal.js'; 
 import { adicionarTransacao, editarTransacao, buscarTransacaoPorId, excluirTransacao } from '../services/transacaoService.js';
 import '../css/gridView.css';
+import Dashboard from './Dashboard.js';
 
 const Status = {
     0: 'Recebido',
@@ -33,12 +34,17 @@ const GridView = () => {
     const [isConfirmacaoOpen, setConfirmacaoOpen] = useState(false);
     const [transacaoAtual, setTransacaoAtual] = useState(null);
     const [descricaoParaExcluir, setDescricaoParaExcluir] = useState('');
+    const [mostrarNovoComponente, setMostrarNovoComponente] = useState(true);
 
     // Estados temporários para os filtros
     const [filtroOrdenacaoValor, setFiltroOrdenacaoValor] = useState('');
     const [filtroOrdenacaoVencimento, setFiltroOrdenacaoVencimento] = useState('');
     const [filtroTipo, setFiltroTipo] = useState('');
     const [filtroStatus, setFiltroStatus] = useState('');
+
+    const trocarComponente = () => {
+        setMostrarNovoComponente(!mostrarNovoComponente);
+    };
 
     const handleOpenModal = () => setModalOpen(true);
     const handleCloseModal = () => {
@@ -166,6 +172,9 @@ const GridView = () => {
                         <FaSignOutAlt size={24} title="Logout" />
                     </div>
                 </nav>
+                {mostrarNovoComponente ? (
+                    <Dashboard /> // Substitua "NovoComponente" pelo nome do seu novo componente
+                ) : (
                 <div className="main-content">
                     <div className="filters-container">
                         <h3>Filtros</h3>
@@ -263,6 +272,8 @@ const GridView = () => {
                         </table>
                     </div>
                 </div>
+                )}
+
             </div>
         </>
     );

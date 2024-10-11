@@ -14,7 +14,6 @@ import {
 } from 'chart.js';
 import '../css/dashboard.css';
 
-// Registrando os componentes necessários do chart.js
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -28,9 +27,8 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
-    // Dados para o gráfico de linha (Receitas mensais)
     const lineData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
         datasets: [
             {
                 label: 'Receitas',
@@ -44,7 +42,6 @@ const Dashboard = () => {
         ],
     };
 
-    // Dados para o gráfico de pizza (Distribuição de receitas por categoria)
     const pieData = {
         labels: ['Vendas', 'Serviços', 'Outros'],
         datasets: [
@@ -56,9 +53,8 @@ const Dashboard = () => {
         ],
     };
 
-    // Dados para o gráfico de barras (Despesas totais por mês)
     const barData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
         datasets: [
             {
                 label: 'Despesas',

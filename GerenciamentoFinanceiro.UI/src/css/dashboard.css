@@ -1,11 +1,12 @@
 /* Dashboard.css */
 .dashboard-container {
-    width: 90%;
+    width: 95%;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 h2 {
@@ -16,20 +17,33 @@ h2 {
 
 .charts-row {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 30px;
+    justify-content: space-evenly; /* Centraliza os gráficos */
+    align-items: flex-start;
     flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
 .chart-container {
-    width: 45%;
+    flex: 1 1 40%; /* Ajuste para deixar os gráficos com largura mais consistente */
+    max-width: 500px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 15px;
     text-align: center;
+    box-sizing: border-box;
+    margin: 10px; /* Adiciona um pequeno espaçamento ao redor dos gráficos */
+}
+
+.chart-container.small {
+    flex: 1 1 60%;
+    max-width: 400px;
+}
+
+.chart-container.large {
+    flex: 1 1 80%;
+    max-width: 600px;
 }
 
 .chart-container h3 {
@@ -37,8 +51,16 @@ h2 {
     color: #666;
 }
 
+@media (max-width: 1024px) {
+    .chart-container {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .chart-container {
-        width: 90%;
+        flex: 1 1 100%;
+        max-width: 100%;
     }
 }

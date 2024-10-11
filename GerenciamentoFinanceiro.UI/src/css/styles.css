@@ -22,6 +22,10 @@ body {
     cursor: pointer;
     transition: 0.3s;
   }
+
+  .main-layout{
+    background: white;
+  }
   
   .header-options button:hover {
     background-color: #0056b3;
