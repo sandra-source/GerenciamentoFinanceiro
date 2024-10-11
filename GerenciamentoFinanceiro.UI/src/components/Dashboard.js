@@ -4,25 +4,26 @@ import HighchartsReact from 'highcharts-react-official';
 import '../css/dashboard.css';
 
 const Dashboard = () => {
-    const lineOptions = {
+
+    const barOptionsReceitasTotais = {
         chart:{
             width: 800,
             height: 300 
         },
         title: {
-            text: 'Receitas Mensais'
+            text: 'Receitas Totais'
         },
         xAxis: {
             categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
         },
         series: [{
-            name: 'Receitas',
-            data: [1200, 1900, 3000, 5000, 2300, 3200, 2100, 1500, 4000, 2900, 3700, 4200],
-            type: 'line'
+            name: 'Despesas',
+            data: [1500, 2500, 1000, 4000, 2000, 3500, 1200, 1000, 3000, 2800, 3300, 4100],
+            type: 'column'
         }]
     };
 
-    const barOptions = {
+    const barOptionsDespesasTotais = {
         chart:{
             width: 800,
             height: 300 
@@ -59,13 +60,13 @@ const Dashboard = () => {
         }]
     };
 
-    const transactionsOptions = {
+    const lineOptions = {
         chart:{
             width: 800,
             height: 300 
         },
         title: {
-            text: 'Transações por Mês'
+            text: 'Distribuição de Despesas'
         },
         xAxis: {
             categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
@@ -77,6 +78,7 @@ const Dashboard = () => {
         }]
     };
 
+
     return (
         <div className="dashboard-container">
             <h2>Dashboard de Despesas e Receitas</h2>
@@ -84,13 +86,13 @@ const Dashboard = () => {
                 <div className="chart-container">
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={barOptions}
+                        options={barOptionsReceitasTotais}
                     />
                 </div>
                 <div className="chart-container">
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={barOptions}
+                        options={barOptionsDespesasTotais}
                     />
                 </div>
             </div>
