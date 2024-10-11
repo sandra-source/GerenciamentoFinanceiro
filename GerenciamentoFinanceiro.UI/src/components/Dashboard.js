@@ -68,12 +68,12 @@ const Dashboard = () => {
             text: 'Transações por Mês'
         },
         xAxis: {
-            categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio']
+            categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
         },
         series: [{
-            name: 'Número de Transações',
-            data: [30, 50, 40, 60, 70],
-            type: 'bar'
+            name: 'Receitas',
+            data: [1200, 1900, 3000, 5000, 2300, 3200, 2100, 1500, 4000, 2900, 3700, 4200],
+            type: 'line'
         }]
     };
 
@@ -84,7 +84,7 @@ const Dashboard = () => {
                 <div className="chart-container">
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={lineOptions}
+                        options={barOptions}
                     />
                 </div>
                 <div className="chart-container">
@@ -104,7 +104,7 @@ const Dashboard = () => {
                 <div className="chart-container">
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={transactionsOptions}
+                        options={lineOptions}
                     />
                 </div>
             </div>
