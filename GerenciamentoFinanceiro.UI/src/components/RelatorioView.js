@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
-import { FaSignOutAlt, FaEdit, FaTrash, FaHome } from 'react-icons/fa';
-import ModalTransacao from './ModalTransacao.js';
-import ConfirmacaoModal from './ConfirmacaoModal.js'; 
-import HeaderOptions from './HeaderOptions.js';
-import { adicionarTransacao, editarTransacao, buscarTransacaoPorId, excluirTransacao } from '../services/transacaoService.js';
+import { FaSignOutAlt, FaHome, FaFilePdf, FaFileExcel } from 'react-icons/fa';
+import ConfirmacaoModal from './ConfirmacaoModal.js';
+import { excluirTransacao } from '../services/transacaoService.js';
 import '../css/gridView.css';
-import Dashboard from './Dashboard.js';
+import { exportToExcel, exportToPdf } from '../utils/exportUtils'; // Funções utilitárias para exportação
 
 const Status = {
     0: 'Recebido',
@@ -22,7 +20,7 @@ const TipoTransacao = {
     1: 'Despesa',
 };
 
-const GridView = () => {
+const RelatoriosView = () => {
     const dispatch = useDispatch();
     const transacoes = useSelector((state) => state.transacoes.transacoes || []);
 
@@ -31,72 +29,16 @@ const GridView = () => {
     const [tipo, setTipo] = useState('');
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [isModalOpen, setModalOpen] = useState(false);
     const [isConfirmacaoOpen, setConfirmacaoOpen] = useState(false);
     const [transacaoAtual, setTransacaoAtual] = useState(null);
     const [descricaoParaExcluir, setDescricaoParaExcluir] = useState('');
-    const [mostrarDashboardComponent, setmostrarDashboardComponent] = useState(false);
 
     const [filtroOrdenacaoValor, setFiltroOrdenacaoValor] = useState('');
     const [filtroOrdenacaoVencimento, setFiltroOrdenacaoVencimento] = useState('');
     const [filtroTipo, setFiltroTipo] = useState('');
     const [filtroStatus, setFiltroStatus] = useState('');
-
-    const mostrarDashboard = () => {
-        setmostrarDashboardComponent(true);
-    };
-
-    const mostrarHome = () => {
-        setmostrarDashboardComponent(false);
-    };
-
-    const handleOpenModal = () => setModalOpen(true);
-    const handleCloseModal = () => {
-        setModalOpen(false);
-        setTransacaoAtual(null);
-    };
-
-    const handleNewTransaction = async (novaTransacao) => {
-        try {
-            if (transacaoAtual) {
-                await editarTransacao(novaTransacao.id, novaTransacao); 
-            } else {
-                await adicionarTransacao(novaTransacao);
-            }
-            aplicarFiltros(); // Atualiza a lista após adicionar/editar
-        } catch (error) {
-            console.error("Erro ao salvar transação:", error);
-        } finally {
-            handleCloseModal();
-        }
-    };
-
-    const handleEdit = async (id) => {
-        try {
-            const transacao = await buscarTransacaoPorId(id);
-            setTransacaoAtual(transacao);
-            handleOpenModal();
-        } catch (error) {
-            console.error("Erro ao buscar transação para edição:", error);
-        }
-    };
-
-    const handleDelete = (id, descricao) => {
-        setTransacaoAtual({ id });
-        setDescricaoParaExcluir(descricao);
-        setConfirmacaoOpen(true);
-    };
-
-    const confirmarExclusao = async () => {
-        try {
-            await excluirTransacao(transacaoAtual.id);
-            aplicarFiltros();
-        } catch (error) {
-            console.error("Erro ao excluir transação:", error);
-        } finally {
-            setConfirmacaoOpen(false);
-        }
-    };
+    const [filtroDataInicio, setFiltroDataInicio] = useState('');
+    const [filtroDataFim, setFiltroDataFim] = useState('');
 
     const aplicarFiltros = () => {
         setIsLoading(true);
@@ -104,7 +46,9 @@ const GridView = () => {
             ordenacaoValor: filtroOrdenacaoValor, 
             ordenacaoVencimento: filtroOrdenacaoVencimento, 
             tipo: filtroTipo, 
-            status: filtroStatus 
+            status: filtroStatus,
+            dataInicio: filtroDataInicio,
+            dataFim: filtroDataFim
         })).finally(() => setIsLoading(false));
 
         setOrdenacaoValor(filtroOrdenacaoValor);
@@ -139,23 +83,42 @@ const GridView = () => {
 
     const transacoesOrdenadas = ordenarTransacoes(transacoes);
 
+    const handleDelete = (id, descricao) => {
+        setTransacaoAtual({ id });
+        setDescricaoParaExcluir(descricao);
+        setConfirmacaoOpen(true);
+    };
+
+    const confirmarExclusao = async () => {
+        try {
+            await excluirTransacao(transacaoAtual.id);
+            aplicarFiltros();
+        } catch (error) {
+            console.error("Erro ao excluir transação:", error);
+        } finally {
+            setConfirmacaoOpen(false);
+        }
+    };
+
     const handleLogout = () => {
         window.location.href = '/';
         sessionStorage.setItem("Token", "");
     };
 
+    const handleExportPdf = () => {
+        exportToPdf(transacoesOrdenadas);
+    };
+
+    const handleExportExcel = () => {
+        exportToExcel(transacoesOrdenadas);
+    };
+
     useEffect(() => {
         aplicarFiltros();
-    }, []); 
+    }, []);
 
     return (
         <>
-            <ModalTransacao 
-                isOpen={isModalOpen} 
-                onClose={handleCloseModal} 
-                onSubmit={handleNewTransaction}
-                transacao={transacaoAtual}
-            />
             <ConfirmacaoModal 
                 isOpen={isConfirmacaoOpen}
                 onClose={() => setConfirmacaoOpen(false)}
@@ -163,22 +126,6 @@ const GridView = () => {
                 descricao={descricaoParaExcluir}
             />
             <div className="grid-view-container">
-                <nav className="navbar">
-                    <ul>
-                    {mostrarDashboardComponent && (
-                        <li><a onClick={mostrarHome}><FaHome size={24} title="Home" /></a></li>
-                    )}
-                        <li><a onClick={handleOpenModal}>Cadastrar Transação</a></li>
-                        <li><a href="/meus-relatorios">Meus Relatórios</a></li>
-                        <li><a onClick={mostrarDashboard}>Meu Dashboard</a></li>
-                    </ul>
-                    <div className="logout-icon" onClick={handleLogout}>
-                        <FaSignOutAlt size={24} title="Logout" />
-                    </div>
-                </nav>
-                {mostrarDashboardComponent ? (
-                    <Dashboard />
-                ) : (
                 <div className="main-content">
                     <div className="filters-container">
                         <h3>Filtros</h3>
@@ -215,8 +162,30 @@ const GridView = () => {
                                 <option value="decrescente">Decrescente</option>
                             </select>
                         </div>
+                        <div className="filter-item">
+                            <label>Data de Início:</label>
+                            <input 
+                                type="date" 
+                                value={filtroDataInicio} 
+                                onChange={(e) => setFiltroDataInicio(e.target.value)} 
+                            />
+                        </div>
+                        <div className="filter-item">
+                            <label>Data de Fim:</label>
+                            <input 
+                                type="date" 
+                                value={filtroDataFim} 
+                                onChange={(e) => setFiltroDataFim(e.target.value)} 
+                            />
+                        </div>
                         <button className="apply-filters-button" onClick={aplicarFiltros}>
                             Aplicar Filtros
+                        </button>
+                        <button className="export-button" onClick={handleExportPdf}>
+                            <FaFilePdf /> Exportar em PDF
+                        </button>
+                        <button className="export-button">
+                            <FaFileExcel /> Exportar em Excel
                         </button>
                     </div>
                     <div className="grid-view">
@@ -229,13 +198,12 @@ const GridView = () => {
                                     <th>Forma de pagamento</th>
                                     <th>Vencimento</th>
                                     <th>Status</th>
-                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {isLoading ? (
                                     <tr>
-                                        <td colSpan="7">Carregando...</td>
+                                        <td colSpan="6">Carregando...</td>
                                     </tr>
                                 ) : transacoesOrdenadas.length > 0 ? (
                                     transacoesOrdenadas.map((item) => (
@@ -253,34 +221,20 @@ const GridView = () => {
                                                     }) : 'N/A'}
                                             </td>
                                             <td>{Status[item.status] || 'N/A'}</td>
-                                            <td>
-                                                <FaEdit 
-                                                    onClick={() => handleEdit(item.id)}
-                                                    className="icon-action icon-edit"
-                                                    title="Editar"
-                                                />
-                                                <FaTrash
-                                                    onClick={() => handleDelete(item.id, item.descricao)}
-                                                    className="icon-action icon-delete"
-                                                    title="Excluir"
-                                                />
-                                            </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="7">Nenhuma transação encontrada</td>
+                                        <td colSpan="6">Nenhuma transação encontrada</td>
                                     </tr>
                                 )}
                             </tbody>
                         </table>
                     </div>
                 </div>
-                )}
-
             </div>
         </>
     );
 };
 
-export default GridView;
+export default RelatoriosView;

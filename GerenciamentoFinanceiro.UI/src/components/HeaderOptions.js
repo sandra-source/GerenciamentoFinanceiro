@@ -1,22 +1,22 @@
 // HeaderOptions.js
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
 import '../css/styles.css';
 
-const HeaderOptions = ({ handleLogout }) => {
+const HeaderOptions = ({ handleLogout, onDashboardClick }) => {
     return (
         <nav className="navbar">
             <ul>
                 <li>
-                    <Link to="/home">Cadastrar Transação</Link>
+                    <a onClick={() => onDashboardClick()}>Meu Dashboard</a>
                 </li>
                 <li>
-                    <Link to="/meus-relatorios">Meus Relatórios</Link>
+                    <a onClick={() => onDashboardClick(false)}>Cadastrar Transação</a>
                 </li>
                 <li>
-                    <Link to="/dashboard">Meu Dashboard</Link>
+                    <a href="/meus-relatorios">Meus Relatórios</a>
                 </li>
+                
             </ul>
             <div className="logout-icon" onClick={handleLogout}>
                 <FaSignOutAlt size={24} title="Logout" />
@@ -26,3 +26,4 @@ const HeaderOptions = ({ handleLogout }) => {
 };
 
 export default HeaderOptions;
+
