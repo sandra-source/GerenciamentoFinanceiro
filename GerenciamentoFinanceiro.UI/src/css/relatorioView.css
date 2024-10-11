@@ -1,54 +1,98 @@
 .export-button {
-    background-color: #4CAF50; /* Cor de fundo */
-    color: white; /* Cor do texto */
-    padding: 10px 20px; /* Espaçamento interno */
-    border: none; /* Sem borda */
-    border-radius: 5px; /* Bordas arredondadas */
-    cursor: pointer; /* Cursor em forma de mãozinha */
-    font-size: 16px; /* Tamanho da fonte */
-    margin-right: 10px; /* Espaçamento entre os botões */
-    display: inline-flex; /* Alinhamento do ícone */
-    align-items: center; /* Alinhamento do ícone */
+    background-color: #4CAF50; 
+    color: white; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    font-size: 16px; 
+    margin-right: 10px; 
+    display: inline-flex; 
+    align-items: center; 
 }
 
 .export-button:hover {
-    background-color: #45a049; /* Cor ao passar o mouse */
+    background-color: #45a049; 
 }
 
 .export-button svg {
-    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+    margin-right: 8px; 
 }
 
 .export-button.pdf {
-    background-color: #e74c3c; /* Vermelho para PDF */
+    background-color: #e74c3c; 
 }
 
 .export-button.pdf:hover {
-    background-color: #c0392b; /* Vermelho mais escuro no hover */
+    background-color: #c0392b; 
 }
 
-/* Estilo para o botão de exportação em Excel */
 .export-button.excel {
-    background-color: #4CAF50; /* Verde para Excel */
+    background-color: #4CAF50; 
 }
 
 .export-button.excel:hover {
-    background-color: #45a049; /* Verde mais escuro no hover */
+    background-color: #45a049; 
 }
 
-/* Estilo comum para os botões */
 .export-button {
-    color: white; /* Cor do texto */
-    padding: 10px 20px; /* Espaçamento interno */
-    border: none; /* Sem borda */
-    border-radius: 5px; /* Bordas arredondadas */
-    cursor: pointer; /* Cursor em forma de mãozinha */
-    font-size: 16px; /* Tamanho da fonte */
-    margin-right: 10px; /* Espaçamento entre os botões */
-    display: inline-flex; /* Alinhamento do ícone */
-    align-items: center; /* Alinhamento do ícone */
+    color: white; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 16px;
+    margin-right: 10px;
+    display: inline-flex; 
+    align-items: center; 
 }
 
 .export-button svg {
-    margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+    margin-right: 8px; 
+}
+
+
+.actions-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px; 
+}
+
+.export-button {
+    margin-right: 10px;
+}
+
+.filters-container {
+    margin-top: 20px;
+}
+
+.grid-actions-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px; 
+}
+
+.export-button {
+    margin-left: 10px;
+}
+
+.filter-item input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.filter-item input[type="date"]:focus {
+    border-color: #0056b3; 
+    outline: none;
+}
+
+.filter-item {
+    margin-bottom: 15px;
 }

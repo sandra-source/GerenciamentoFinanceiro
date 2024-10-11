@@ -1,9 +1,7 @@
-// utils/exportUtils.js
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 
-// Função para exportar em PDF
 export const exportToPdf = (data) => {
     const doc = new jsPDF();
     const tableColumn = ["Tipo", "Descrição", "Valor (R$)", "Forma de pagamento", "Vencimento", "Status"];

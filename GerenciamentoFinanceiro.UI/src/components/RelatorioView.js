@@ -182,14 +182,16 @@ const RelatoriosView = () => {
                         <button className="apply-filters-button" onClick={aplicarFiltros}>
                             Aplicar Filtros
                         </button>
-                        <button className="export-button pdf" onClick={handleExportPdf}>
-        <FaFilePdf /> Exportar em PDF
-    </button>
-    <button className="export-button excel" onClick={handleExportExcel}>
-        <FaFileExcel /> Exportar em Excel
-    </button>
                     </div>
                     <div className="grid-view">
+                        <div className="grid-actions-container">
+                            <button className="export-button pdf" onClick={handleExportPdf}>
+                                <FaFilePdf /> Exportar em PDF
+                            </button>
+                            <button className="export-button excel" onClick={handleExportExcel}>
+                                <FaFileExcel /> Exportar em Excel
+                            </button>
+                        </div>
                         <table>
                             <thead>
                                 <tr>
