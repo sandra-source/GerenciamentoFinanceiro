@@ -41,6 +41,10 @@ const RelatoriosView = () => {
     const [filtroDataInicio, setFiltroDataInicio] = useState('');
     const [filtroDataFim, setFiltroDataFim] = useState('');
 
+    // Estado para paginação
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(5); // Quantidade de itens por página
+
     const aplicarFiltros = () => {
         setIsLoading(true);
         dispatch(filtrarTransacoes({ 
@@ -83,6 +87,13 @@ const RelatoriosView = () => {
     };
 
     const transacoesOrdenadas = ordenarTransacoes(transacoes);
+
+    // Lógica de Paginação
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = transacoesOrdenadas.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const handleDelete = (id, descricao) => {
         setTransacaoAtual({ id });
@@ -208,8 +219,8 @@ const RelatoriosView = () => {
                                     <tr>
                                         <td colSpan="6">Carregando...</td>
                                     </tr>
-                                ) : transacoesOrdenadas.length > 0 ? (
-                                    transacoesOrdenadas.map((item) => (
+                                ) : currentItems.length > 0 ? (
+                                    currentItems.map((item) => (
                                         <tr key={item.id}>
                                             <td>{TipoTransacao[item.tipo] || 'N/A'}</td>
                                             <td>{item.descricao}</td>
@@ -233,6 +244,17 @@ const RelatoriosView = () => {
                                 )}
                             </tbody>
                         </table>
+                        <div className="pagination-container">
+                            {Array.from({ length: Math.ceil(transacoesOrdenadas.length / itemsPerPage) }, (_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => paginate(index + 1)}
+                                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
