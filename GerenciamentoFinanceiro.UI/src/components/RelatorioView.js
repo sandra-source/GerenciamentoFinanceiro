@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../css/relatorioView.css'
+import '../css/relatorioView.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
 import { FaSignOutAlt, FaHome, FaFilePdf, FaFileExcel } from 'react-icons/fa';
@@ -49,14 +49,18 @@ const RelatoriosView = () => {
         setIsLoading(true);
     
         const tipoFiltrado = filtroTipo === "Receita" ? 0 : filtroTipo === "Despesa" ? 1 : '';
+
+        // Convertendo as datas para UTC usando toISOString()
+        const dataInicioUtc = filtroDataInicio ? new Date(filtroDataInicio).toISOString() : '';
+        const dataFimUtc = filtroDataFim ? new Date(filtroDataFim).toISOString() : '';
     
         dispatch(filtrarTransacoes({ 
             ordenacaoValor: filtroOrdenacaoValor, 
             ordenacaoVencimento: filtroOrdenacaoVencimento, 
             tipo: tipoFiltrado, 
             status: filtroStatus,
-            dataInicio: filtroDataInicio,
-            dataFim: filtroDataFim
+            dataInicio: dataInicioUtc,
+            dataFim: dataFimUtc
         })).finally(() => setIsLoading(false));
     
         setOrdenacaoValor(filtroOrdenacaoValor);
@@ -64,7 +68,6 @@ const RelatoriosView = () => {
         setTipo(filtroTipo);
         setStatus(filtroStatus);
     };
-    
 
     const ordenarTransacoes = (transacoes) => {
         if (!Array.isArray(transacoes)) {

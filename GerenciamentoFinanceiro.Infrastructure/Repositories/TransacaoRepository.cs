@@ -21,13 +21,13 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Transacao>> ObterTransacoes(
-            string ordenacaoValor,
-            string ordenacaoData,
-            string categoria,
-            string status,
-            int? tipo,
-            DateTime? dataInicio,
-            DateTime? dataFim
+        string ordenacaoValor,
+        string ordenacaoData,
+        string categoria,
+        string status,
+        int? tipo,
+        DateTime? dataInicio,
+        DateTime? dataFim
         )
         {
             var query = _context.Transacoes.AsQueryable();
@@ -49,17 +49,14 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.Where(t => t.Tipo == tipoEnum);
             }
 
-            // Convertendo as datas para UTC para evitar problemas com o banco de dados
             if (dataInicio.HasValue)
             {
-                var dataInicioUtc = DateTime.SpecifyKind(dataInicio.Value, DateTimeKind.Utc);
-                query = query.Where(t => t.DataVencimento >= dataInicioUtc);
+                query = query.Where(t => t.DataVencimento >= dataInicio.Value);
             }
 
             if (dataFim.HasValue)
             {
-                var dataFimUtc = DateTime.SpecifyKind(dataFim.Value, DateTimeKind.Utc);
-                query = query.Where(t => t.DataVencimento <= dataFimUtc);
+                query = query.Where(t => t.DataVencimento <= dataFim.Value);
             }
 
             if (ordenacaoValor == "crescente")
@@ -82,7 +79,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
 
             return await query.ToListAsync();
         }
-
 
 
         public async Task<IEnumerable<Transacao>> ObterTodasTransacoes()
