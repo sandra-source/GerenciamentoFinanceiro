@@ -19,9 +19,17 @@ namespace GerenciamentoFinanceiro.Application.Services
             _transacaoRepository = transacaoRepository;
         }
 
-        public async Task<IEnumerable<TransacaoDTO>> ObterTransacoes(string ordenacaoValor, string ordenacaoData, string categoria, string status, int? tipo)
+        public async Task<IEnumerable<TransacaoDTO>> ObterTransacoes(
+        string ordenacaoValor,
+        string ordenacaoData,
+        string categoria,
+        string status,
+        int? tipo,
+        DateTime? dataInicio,
+        DateTime? dataFim
+        )
         {
-            var transacoes = await _transacaoRepository.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo);
+            var transacoes = await _transacaoRepository.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
 
             return transacoes.Select(t => new TransacaoDTO
             {
@@ -38,6 +46,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Tipo = t.Tipo
             }).ToList();
         }
+
 
 
         public async Task<TransacaoDTO> ObterPorId(int id)

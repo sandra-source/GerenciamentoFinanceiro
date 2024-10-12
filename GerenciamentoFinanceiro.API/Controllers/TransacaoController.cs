@@ -19,16 +19,21 @@ namespace GerenciamentoFinanceiro.API.Controllers
 
         [HttpGet]
         [HttpGet]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<TransacaoDTO>>> ObterTransacoes(
         string ordenacaoValor = null,
         string ordenacaoData = null,
         string categoria = null,
         string status = null,
-        int? tipo = null) // Novo parâmetro para tipo
+        int? tipo = null,
+        DateTime? dataInicio = null, 
+        DateTime? dataFim = null    
+)
         {
-            var transacoes = await _transacaoService.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo);
+            var transacoes = await _transacaoService.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
             return Ok(transacoes);
         }
+
 
 
         [HttpGet("{id}")]

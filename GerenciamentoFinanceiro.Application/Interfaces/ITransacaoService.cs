@@ -9,7 +9,7 @@ namespace GerenciamentoFinanceiro.Application.Interfaces
 {
     public interface ITransacaoService
     {
-        Task<IEnumerable<TransacaoDTO>> ObterTransacoes(string ordenacaoValor, string ordenacaoData, string categoria, string status, int? tipo);
+        Task<IEnumerable<TransacaoDTO>> ObterTransacoes(string ordenacaoValor, string ordenacaoData, string categoria, string status, int? tipo, DateTime? dataInicio, DateTime? dataFim);
         Task<TransacaoDTO> ObterPorId(int id);
         Task AdicionarTransacao(TransacaoDTO transacaoDTO);
         Task AtualizarTransacao(TransacaoDTO transacaoDTO);
