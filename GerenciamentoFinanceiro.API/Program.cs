@@ -21,7 +21,6 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IRelatorioService, RelatorioService>();
 builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 
 

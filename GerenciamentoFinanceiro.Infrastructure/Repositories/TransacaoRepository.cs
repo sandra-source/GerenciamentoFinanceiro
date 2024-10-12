@@ -80,7 +80,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             return await query.ToListAsync();
         }
 
-
         public async Task<IEnumerable<Transacao>> ObterTodasTransacoes()
         {
             return await _context.Transacoes.ToListAsync();

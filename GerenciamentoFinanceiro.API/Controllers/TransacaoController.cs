@@ -28,7 +28,7 @@ namespace GerenciamentoFinanceiro.API.Controllers
         int? tipo = null,
         DateTime? dataInicio = null, 
         DateTime? dataFim = null    
-)
+        )
         {
             var transacoes = await _transacaoService.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
             return Ok(transacoes);

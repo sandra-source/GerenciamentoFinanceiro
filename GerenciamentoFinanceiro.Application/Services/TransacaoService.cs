@@ -80,7 +80,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 FormaDePagamento = transacaoDTO.FormaDePagamento,
                 Origem = transacaoDTO.Origem,
                 Natureza = transacaoDTO.Natureza,
-                DataRegistro = transacaoDTO.DataRegistro,
+                DataRegistro = DateTime.Now,
                 DataVencimento = transacaoDTO.DataVencimento,
                 Tipo = transacaoDTO.Tipo,
                 Status = transacaoDTO.Status
