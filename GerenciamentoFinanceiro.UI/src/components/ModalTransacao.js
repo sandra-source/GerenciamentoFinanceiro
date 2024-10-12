@@ -134,7 +134,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
                     />
                     <label>Tipo</label>
                     <select 
-                        value={tipo} 
+                        value={tipo}  
                         onChange={(e) => setTipo(parseInt(e.target.value))} 
                         required
                     >
