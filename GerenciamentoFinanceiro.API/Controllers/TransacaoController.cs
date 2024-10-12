@@ -18,21 +18,27 @@ namespace GerenciamentoFinanceiro.API.Controllers
         }
 
         [HttpGet]
-        [HttpGet]
-        [HttpGet]
         public async Task<ActionResult<IEnumerable<TransacaoDTO>>> ObterTransacoes(
         string ordenacaoValor = null,
         string ordenacaoData = null,
         string categoria = null,
         string status = null,
         int? tipo = null,
-        DateTime? dataInicio = null, 
-        DateTime? dataFim = null    
-        )
+        DateTime? dataInicio = null,
+        DateTime? dataFim = null,
+        int pageNumber = 1,
+        int pageSize = 10
+)
         {
-            var transacoes = await _transacaoService.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
+            var transacoes = await _transacaoService.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim, pageNumber, pageSize);
+            var totalTransacoes = await _transacaoService.ObterTotalTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
+
+            Response.Headers.Append("X-Total-Count", totalTransacoes.ToString()); // Enviando o total de transações nos headers
+
             return Ok(transacoes);
         }
+
+
 
 
 

@@ -20,16 +20,18 @@ namespace GerenciamentoFinanceiro.Application.Services
         }
 
         public async Task<IEnumerable<TransacaoDTO>> ObterTransacoes(
-        string ordenacaoValor,
-        string ordenacaoData,
-        string categoria,
-        string status,
-        int? tipo,
-        DateTime? dataInicio,
-        DateTime? dataFim
+            string ordenacaoValor,
+            string ordenacaoData,
+            string categoria,
+            string status,
+            int? tipo,
+            DateTime? dataInicio,
+            DateTime? dataFim,
+            int pageNumber,
+            int pageSize
         )
         {
-            var transacoes = await _transacaoRepository.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
+            var transacoes = await _transacaoRepository.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim, pageNumber, pageSize);
 
             return transacoes.Select(t => new TransacaoDTO
             {
@@ -47,7 +49,18 @@ namespace GerenciamentoFinanceiro.Application.Services
             }).ToList();
         }
 
-
+        public async Task<int> ObterTotalTransacoes(
+            string ordenacaoValor,
+            string ordenacaoData,
+            string categoria,
+            string status,
+            int? tipo,
+            DateTime? dataInicio,
+            DateTime? dataFim
+        )
+        {
+            return await _transacaoRepository.ObterTotalTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
+        }
 
         public async Task<TransacaoDTO> ObterPorId(int id)
         {
@@ -80,11 +93,14 @@ namespace GerenciamentoFinanceiro.Application.Services
                 FormaDePagamento = transacaoDTO.FormaDePagamento,
                 Origem = transacaoDTO.Origem,
                 Natureza = transacaoDTO.Natureza,
-                DataRegistro = DateTime.Now,
+                DataRegistro = DateTime.UtcNow,
                 DataVencimento = transacaoDTO.DataVencimento,
                 Tipo = transacaoDTO.Tipo,
                 Status = transacaoDTO.Status
             };
+
+            Console.WriteLine("DataRegistro: " + transacao.DataRegistro.ToString("o"));
+            Console.WriteLine("DataVencimento: " + transacao.DataVencimento?.ToString("o"));
 
             await _transacaoRepository.AdicionarTransacao(transacao);
         }

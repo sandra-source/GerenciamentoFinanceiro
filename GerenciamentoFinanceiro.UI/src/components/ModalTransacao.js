@@ -13,12 +13,20 @@ const Natureza = {
     1: 'Não Recorrente',
 };
 
+const FormaDePagamento = {
+    0: 'Cartão',
+    1: 'Dinheiro',
+    2: 'Transferência',
+    3: 'Pix',
+    4: 'Cheque',
+};
+
 const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
     const [descricao, setDescricao] = useState('');
     const [valor, setValor] = useState('');
     const [categoria, setCategoria] = useState('');
     const [origem, setOrigem] = useState('');
-    const [formaDePagamento, setFormaDePagamento] = useState('');
+    const [formaDePagamento, setFormaDePagamento] = useState(0); // Inicializando como enum
     const [dataVencimento, setDataVencimento] = useState('');
     const [tipo, setTipo] = useState(1);
     const [status, setStatus] = useState(0);
@@ -30,7 +38,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
             setValor(transacao.valor || '');
             setCategoria(transacao.categoria || '');
             setOrigem(transacao.origem || '');
-            setFormaDePagamento(transacao.formaDePagamento || '');
+            setFormaDePagamento(transacao.formaDePagamento || 0);
             setDataVencimento(transacao.dataVencimento ? new Date(transacao.dataVencimento).toISOString().split('T')[0] : '');
             setTipo(transacao.tipo);
             setStatus(transacao.status);
@@ -42,20 +50,25 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         const novaTransacao = {
-            id: transacao ? transacao.id : 0,
             descricao,
-            valor: parseFloat(valor), 
+            valor: parseFloat(valor),
             categoria,
             origem,
-            formaDePagamento,
+            formaDePagamento: parseInt(formaDePagamento), // Tratando como número
             dataVencimento: dataVencimento ? new Date(dataVencimento).toISOString() : null,
             tipo: parseInt(tipo),
             status: parseInt(status),
             natureza: parseInt(natureza)
         };
     
+        if (transacao && transacao.id) {
+            novaTransacao.id = transacao.id;
+        }
+    
         onSubmit(novaTransacao);
+        resetForm();
     };
     
 
@@ -64,7 +77,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
         setValor('');
         setCategoria('');
         setOrigem('');
-        setFormaDePagamento('');
+        setFormaDePagamento(0);
         setDataVencimento('');
         setTipo(0);
         setStatus(0);
@@ -73,9 +86,9 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
 
     const handleValorChange = (e) => {
         let valorInput = e.target.value;
-    
+
         valorInput = valorInput.replace(',', '.');
-    
+
         setValor(valorInput);
     };
 
@@ -118,12 +131,15 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
                         onChange={(e) => setOrigem(e.target.value)} 
                     />
                     <label>Forma de Pagamento</label>
-                    <input 
-                        type="text" 
-                        placeholder="Forma de Pagamento" 
-                        value={formaDePagamento}
-                        onChange={(e) => setFormaDePagamento(e.target.value)} 
-                    />
+                    <select 
+                        value={formaDePagamento} 
+                        onChange={(e) => setFormaDePagamento(parseInt(e.target.value))} // Usando o enum
+                        required
+                    >
+                        {Object.keys(FormaDePagamento).map((key) => (
+                            <option key={key} value={key}>{FormaDePagamento[key]}</option>
+                        ))}
+                    </select>
                     <label>Data de Vencimento</label>
                     <input 
                         type="date" 

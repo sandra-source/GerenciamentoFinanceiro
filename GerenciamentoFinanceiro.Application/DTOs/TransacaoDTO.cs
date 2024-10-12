@@ -13,7 +13,7 @@ namespace GerenciamentoFinanceiro.Application.DTOs
         public decimal Valor { get; set; }
         public string Categoria { get; set; }
         public string Descricao { get; set; }
-        public string FormaDePagamento { get; set; }
+        public FormaPagamento FormaDePagamento { get; set; }
         public string Origem { get; set; }
         public Natureza Natureza { get; set; }
         public DateTime DataRegistro { get; set; }

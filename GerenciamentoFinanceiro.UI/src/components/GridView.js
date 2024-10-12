@@ -27,6 +27,14 @@ const Natureza = {
     1: 'Não Recorrente',
 };
 
+const FormaDePagamento = {
+    0: 'Cartão',
+    1: 'Dinheiro',
+    2: 'Transferência',
+    3: 'Pix',
+    4: 'Cheque',
+};
+
 const GridView = () => {
     const dispatch = useDispatch();
     const transacoes = useSelector((state) => state.transacoes.transacoes || []);
@@ -41,6 +49,7 @@ const GridView = () => {
     const [transacaoAtual, setTransacaoAtual] = useState(null);
     const [descricaoParaExcluir, setDescricaoParaExcluir] = useState('');
     const [mostrarDashboardComponent, setmostrarDashboardComponent] = useState(false);
+    const [totalPages, setTotalPages] = useState(1);
 
     const [filtroOrdenacaoValor, setFiltroOrdenacaoValor] = useState('');
     const [filtroOrdenacaoVencimento, setFiltroOrdenacaoVencimento] = useState('');
@@ -49,9 +58,8 @@ const GridView = () => {
     const [filtroDataInicio, setFiltroDataInicio] = useState('');
     const [filtroDataFim, setFiltroDataFim] = useState('');
 
-    // Estado para paginação
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5);
+    const [itemsPerPage] = useState(10);
 
     const mostrarDashboard = () => {
         setmostrarDashboardComponent(true);
@@ -74,7 +82,7 @@ const GridView = () => {
             } else {
                 await adicionarTransacao(novaTransacao);
             }
-            aplicarFiltros(); // Atualiza a lista após adicionar/editar
+            aplicarFiltros(); 
         } catch (error) {
             console.error("Erro ao salvar transação:", error);
         } finally {
@@ -109,15 +117,14 @@ const GridView = () => {
         }
     };
 
-    const aplicarFiltros = () => {
+    const aplicarFiltros = (page = currentPage) => {
         setIsLoading(true);
-
+    
         const tipoFiltrado = filtroTipo === "Receita" ? 0 : (filtroTipo === "Despesa" ? 1 : '');
-
-        // Convertendo as datas para UTC usando toISOString()
+    
         const dataInicioUtc = filtroDataInicio ? new Date(filtroDataInicio).toISOString() : '';
         const dataFimUtc = filtroDataFim ? new Date(filtroDataFim).toISOString() : '';
-
+    
         dispatch(filtrarTransacoes({
             ordenacaoValor: filtroOrdenacaoValor,
             ordenacaoVencimento: filtroOrdenacaoVencimento,
@@ -125,13 +132,23 @@ const GridView = () => {
             status: filtroStatus,
             dataInicio: dataInicioUtc,
             dataFim: dataFimUtc
-        })).finally(() => setIsLoading(false));
-
-        setOrdenacaoValor(filtroOrdenacaoValor);
-        setOrdenacaoVencimento(filtroOrdenacaoVencimento);
-        setTipo(filtroTipo);
-        setStatus(filtroStatus);
+        }, page, itemsPerPage)).then(response => {
+            if (response && response.headers) { 
+                const totalTransacoes = parseInt(response.headers['x-total-count'], 10);
+                const newTotalPages = Math.ceil(totalTransacoes / itemsPerPage); 
+                setTotalPages(newTotalPages); 
+            } else {
+                console.error("API response did not return headers");
+            }
+        }).finally(() => setIsLoading(false));
     };
+
+    // Atualizar a página atual se necessário
+    useEffect(() => {
+        if (currentPage > totalPages) {
+            setCurrentPage(1);
+        }
+    }, [totalPages]);
 
     const ordenarTransacoes = (transacoes) => {
         if (!Array.isArray(transacoes)) {
@@ -159,12 +176,12 @@ const GridView = () => {
 
     const transacoesOrdenadas = ordenarTransacoes(transacoes);
 
-    // Lógica de Paginação
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = transacoesOrdenadas.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = transacoesOrdenadas;
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);  
+        aplicarFiltros(pageNumber);  
+    };
 
     const handleExportPdf = () => {
         exportToPdf(transacoesOrdenadas);
@@ -179,6 +196,7 @@ const GridView = () => {
         sessionStorage.setItem("Token", "");
     };
 
+    // Carregar os dados iniciais
     useEffect(() => {
         aplicarFiltros();
     }, []);
@@ -265,7 +283,7 @@ const GridView = () => {
                                     onChange={(e) => setFiltroDataFim(e.target.value)}
                                 />
                             </div>
-                            <button className="apply-filters-button" onClick={aplicarFiltros}>
+                            <button className="apply-filters-button" onClick={() => aplicarFiltros(1)}>
                                 Aplicar Filtros
                             </button>
                         </div>
@@ -302,7 +320,7 @@ const GridView = () => {
                                                 <td>{TipoTransacao[item.tipo] || 'N/A'}</td>
                                                 <td>{item.descricao}</td>
                                                 <td>{item.valor}</td>
-                                                <td>{item.formaDePagamento}</td>
+                                                <td>{FormaDePagamento[item.formaDePagamento] || 'N/A'}</td> 
                                                 <td>
                                                     {item.dataVencimento
                                                         ? new Date(item.dataVencimento).toLocaleDateString('pt-BR', {
@@ -334,13 +352,12 @@ const GridView = () => {
                                         </tr>
                                     )}
                                 </tbody>
-
                             </table>
                             <div className="pagination-container">
-                                {Array.from({ length: Math.ceil(transacoesOrdenadas.length / itemsPerPage) }, (_, index) => (
+                                {Array.from({ length: totalPages }, (_, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => paginate(index + 1)}
+                                        onClick={() => paginate(index + 1)}  // Atualiza a página atual corretamente
                                         className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
                                     >
                                         {index + 1}
@@ -350,7 +367,6 @@ const GridView = () => {
                         </div>
                     </div>
                 )}
-
             </div>
         </>
     );

@@ -1,9 +1,15 @@
 import api from './api';
 
-export const buscarTransacoes = async (filtros) => {
+export const buscarTransacoes = async (filtros, pageNumber = 1, pageSize = 10) => {
     try {
-        const response = await api.get('/transacao', { params: filtros });
-        return response.data;
+        const response = await api.get('/transacao', {
+            params: { 
+                ...filtros, 
+                pageNumber,   
+                pageSize    
+            }
+        });
+        return response;  
     } catch (error) {
         console.error('Erro ao buscar transações:', error);
         throw error;

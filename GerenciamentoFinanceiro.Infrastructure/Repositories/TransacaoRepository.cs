@@ -21,13 +21,15 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<Transacao>> ObterTransacoes(
-        string ordenacaoValor,
-        string ordenacaoData,
-        string categoria,
-        string status,
-        int? tipo,
-        DateTime? dataInicio,
-        DateTime? dataFim
+            string ordenacaoValor,
+            string ordenacaoData,
+            string categoria,
+            string status,
+            int? tipo,
+            DateTime? dataInicio,
+            DateTime? dataFim,
+            int pageNumber,
+            int pageSize
         )
         {
             var query = _context.Transacoes.AsQueryable();
@@ -77,8 +79,67 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.OrderByDescending(t => t.DataRegistro);
             }
 
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
             return await query.ToListAsync();
         }
+
+        public async Task<int> ObterTotalTransacoes(
+            string ordenacaoValor,
+            string ordenacaoData,
+            string categoria,
+            string status,
+            int? tipo,
+            DateTime? dataInicio,
+            DateTime? dataFim
+        )
+        {
+            var query = _context.Transacoes.AsQueryable();
+
+            if (!string.IsNullOrEmpty(ordenacaoValor))
+            {
+                query = ordenacaoValor == "crescente"
+                    ? query.OrderBy(t => t.Valor)
+                    : query.OrderByDescending(t => t.Valor);
+            }
+
+            if (!string.IsNullOrEmpty(ordenacaoData))
+            {
+                query = ordenacaoData == "crescente"
+                    ? query.OrderBy(t => t.DataVencimento)
+                    : query.OrderByDescending(t => t.DataVencimento);
+            }
+
+            if (!string.IsNullOrEmpty(categoria))
+            {
+                query = query.Where(t => t.Categoria == categoria);
+            }
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                var statusEnum = Enum.Parse<Status>(status);
+                query = query.Where(t => t.Status == statusEnum);
+            }
+
+            if (tipo.HasValue)
+            {
+                var tipoEnum = (TipoTransacao)tipo.Value;
+                query = query.Where(t => t.Tipo == tipoEnum);
+            }
+
+            if (dataInicio.HasValue)
+            {
+                query = query.Where(t => t.DataVencimento >= dataInicio.Value);
+            }
+
+            if (dataFim.HasValue)
+            {
+                query = query.Where(t => t.DataVencimento <= dataFim.Value);
+            }
+
+            return await query.CountAsync();
+        }
+
 
         public async Task<IEnumerable<Transacao>> ObterTodasTransacoes()
         {
