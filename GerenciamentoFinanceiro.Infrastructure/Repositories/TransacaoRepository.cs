@@ -20,7 +20,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Transacao>> ObterTransacoes(string ordenacaoValor, string ordenacaoData, string categoria, string status)
+        public async Task<IEnumerable<Transacao>> ObterTransacoes(string ordenacaoValor, string ordenacaoData, string categoria, string status, int? tipo)
         {
             var query = _context.Transacoes.AsQueryable();
 
@@ -33,6 +33,12 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
             {
                 var statusEnum = Enum.Parse<Status>(status);
                 query = query.Where(t => t.Status == statusEnum);
+            }
+
+            if (tipo.HasValue)
+            {
+                var tipoEnum = (TipoTransacao)tipo.Value;
+                query = query.Where(t => t.Tipo == tipoEnum);
             }
 
             if (ordenacaoValor == "crescente")
@@ -55,6 +61,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
 
             return await query.ToListAsync();
         }
+
 
         public async Task<IEnumerable<Transacao>> ObterTodasTransacoes()
         {

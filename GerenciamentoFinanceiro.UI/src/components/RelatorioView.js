@@ -43,24 +43,28 @@ const RelatoriosView = () => {
 
     // Estado para paginação
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5); // Quantidade de itens por página
+    const [itemsPerPage] = useState(5); 
 
     const aplicarFiltros = () => {
         setIsLoading(true);
+    
+        const tipoFiltrado = filtroTipo === "Receita" ? 0 : filtroTipo === "Despesa" ? 1 : '';
+    
         dispatch(filtrarTransacoes({ 
             ordenacaoValor: filtroOrdenacaoValor, 
             ordenacaoVencimento: filtroOrdenacaoVencimento, 
-            tipo: filtroTipo, 
+            tipo: tipoFiltrado, 
             status: filtroStatus,
             dataInicio: filtroDataInicio,
             dataFim: filtroDataFim
         })).finally(() => setIsLoading(false));
-
+    
         setOrdenacaoValor(filtroOrdenacaoValor);
         setOrdenacaoVencimento(filtroOrdenacaoVencimento);
         setTipo(filtroTipo);
         setStatus(filtroStatus);
     };
+    
 
     const ordenarTransacoes = (transacoes) => {
         if (!Array.isArray(transacoes)) {
