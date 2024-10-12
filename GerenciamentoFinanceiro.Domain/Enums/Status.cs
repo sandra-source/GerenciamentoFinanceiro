@@ -8,10 +8,9 @@ namespace GerenciamentoFinanceiro.Domain.Enums
 {
     public enum Status
     {
-        Recebido,
-        AReceber,
         Pendente,
         Pago,
-        EmNegociacao
+        EmNegociacao,
+        Vencido
     }
 }

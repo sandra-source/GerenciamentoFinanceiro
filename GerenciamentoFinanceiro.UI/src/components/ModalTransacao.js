@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import '../css/modal.css';
 
 const Status = {
-    0: 'Recebido',
-    1: 'A Receber',
-    2: 'Pendente',
-    3: 'Pago',
-    4: 'Em Negociação',
+    0: 'Pendente',
+    1: 'Pago',
+    2: 'Em Negociação',
+    3: 'Vencido',
 };
 
 const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {

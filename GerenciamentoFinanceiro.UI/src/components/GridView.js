@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
-import { FaSignOutAlt, FaEdit, FaTrash, FaHome } from 'react-icons/fa';
+import { FaSignOutAlt, FaEdit, FaTrash, FaHome, FaFilePdf, FaFileExcel } from 'react-icons/fa';
 import ModalTransacao from './ModalTransacao.js';
 import ConfirmacaoModal from './ConfirmacaoModal.js'; 
 import HeaderOptions from './HeaderOptions.js';
 import { adicionarTransacao, editarTransacao, buscarTransacaoPorId, excluirTransacao } from '../services/transacaoService.js';
+import { exportToExcel, exportToPdf } from '../utils/exportUtils';
 import '../css/gridView.css';
 import Dashboard from './Dashboard.js';
 
 const Status = {
-    0: 'Recebido',
-    1: 'A Receber',
-    2: 'Pendente',
-    3: 'Pago',
-    4: 'Em Negociação',
+    0: 'Pendente',
+    1: 'Pago',
+    2: 'Em Negociação',
+    3: 'Vencido',
 };
 
 const TipoTransacao = {
@@ -41,6 +41,12 @@ const GridView = () => {
     const [filtroOrdenacaoVencimento, setFiltroOrdenacaoVencimento] = useState('');
     const [filtroTipo, setFiltroTipo] = useState('');
     const [filtroStatus, setFiltroStatus] = useState('');
+    const [filtroDataInicio, setFiltroDataInicio] = useState('');
+    const [filtroDataFim, setFiltroDataFim] = useState('');
+
+    // Estado para paginação
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(5);
 
     const mostrarDashboard = () => {
         setmostrarDashboardComponent(true);
@@ -100,13 +106,22 @@ const GridView = () => {
 
     const aplicarFiltros = () => {
         setIsLoading(true);
+    
+        const tipoFiltrado = filtroTipo === "Receita" ? 0 : (filtroTipo === "Despesa" ? 1 : '');
+
+        // Convertendo as datas para UTC usando toISOString()
+        const dataInicioUtc = filtroDataInicio ? new Date(filtroDataInicio).toISOString() : '';
+        const dataFimUtc = filtroDataFim ? new Date(filtroDataFim).toISOString() : '';
+    
         dispatch(filtrarTransacoes({ 
             ordenacaoValor: filtroOrdenacaoValor, 
             ordenacaoVencimento: filtroOrdenacaoVencimento, 
-            tipo: filtroTipo, 
-            status: filtroStatus 
+            tipo: tipoFiltrado, 
+            status: filtroStatus,
+            dataInicio: dataInicioUtc,
+            dataFim: dataFimUtc
         })).finally(() => setIsLoading(false));
-
+    
         setOrdenacaoValor(filtroOrdenacaoValor);
         setOrdenacaoVencimento(filtroOrdenacaoVencimento);
         setTipo(filtroTipo);
@@ -139,6 +154,21 @@ const GridView = () => {
 
     const transacoesOrdenadas = ordenarTransacoes(transacoes);
 
+    // Lógica de Paginação
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = transacoesOrdenadas.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const handleExportPdf = () => {
+        exportToPdf(transacoesOrdenadas);
+    };
+
+    const handleExportExcel = () => {
+        exportToExcel(transacoesOrdenadas);
+    };
+
     const handleLogout = () => {
         window.location.href = '/';
         sessionStorage.setItem("Token", "");
@@ -146,7 +176,7 @@ const GridView = () => {
 
     useEffect(() => {
         aplicarFiltros();
-    }, []); 
+    }, []);
 
     return (
         <>
@@ -169,7 +199,6 @@ const GridView = () => {
                         <li><a onClick={mostrarHome}><FaHome size={24} title="Home" /></a></li>
                     )}
                         <li><a onClick={handleOpenModal}>Cadastrar Transação</a></li>
-                        <li><a href="/meus-relatorios">Meus Relatórios</a></li>
                         <li><a onClick={mostrarDashboard}>Meu Dashboard</a></li>
                     </ul>
                     <div className="logout-icon" onClick={handleLogout}>
@@ -215,17 +244,41 @@ const GridView = () => {
                                 <option value="decrescente">Decrescente</option>
                             </select>
                         </div>
+                        <div className="filter-item">
+                            <label>Data de Início:</label>
+                            <input 
+                                type="date" 
+                                value={filtroDataInicio} 
+                                onChange={(e) => setFiltroDataInicio(e.target.value)} 
+                            />
+                        </div>
+                        <div className="filter-item">
+                            <label>Data de Fim:</label>
+                            <input 
+                                type="date" 
+                                value={filtroDataFim} 
+                                onChange={(e) => setFiltroDataFim(e.target.value)} 
+                            />
+                        </div>
                         <button className="apply-filters-button" onClick={aplicarFiltros}>
                             Aplicar Filtros
                         </button>
                     </div>
                     <div className="grid-view">
+                        <div className="grid-actions-container">
+                            <button className="export-button pdf" onClick={handleExportPdf}>
+                                <FaFilePdf /> Exportar em PDF
+                            </button>
+                            <button className="export-button excel" onClick={handleExportExcel}>
+                                <FaFileExcel /> Exportar em Excel
+                            </button>
+                        </div>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Tipo</th>
                                     <th>Descrição</th>
-                                    <th>Valor (R$)</th>
+                                    <th>Valor</th>
                                     <th>Forma de pagamento</th>
                                     <th>Vencimento</th>
                                     <th>Status</th>
@@ -237,8 +290,8 @@ const GridView = () => {
                                     <tr>
                                         <td colSpan="7">Carregando...</td>
                                     </tr>
-                                ) : transacoesOrdenadas.length > 0 ? (
-                                    transacoesOrdenadas.map((item) => (
+                                ) : currentItems.length > 0 ? (
+                                    currentItems.map((item) => (
                                         <tr key={item.id}>
                                             <td>{TipoTransacao[item.tipo] || 'N/A'}</td>
                                             <td>{item.descricao}</td>
@@ -274,6 +327,17 @@ const GridView = () => {
                                 )}
                             </tbody>
                         </table>
+                        <div className="pagination-container">
+                            {Array.from({ length: Math.ceil(transacoesOrdenadas.length / itemsPerPage) }, (_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => paginate(index + 1)}
+                                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
                 )}

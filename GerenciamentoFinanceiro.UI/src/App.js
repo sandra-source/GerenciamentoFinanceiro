@@ -5,7 +5,6 @@ import Login from './components/Login';
 import GridView from './components/GridView';
 import Dashboard from './components/Dashboard';
 import './css/styles.css'; 
-import RelatoriosView from './components/RelatorioView';
 
 function App() {
     return (
@@ -16,7 +15,6 @@ function App() {
                 <Route path="/home" element={<GridView />} />
                 <Route path="/cadastrar-despesa" element={<div>Cadastrar Despesa</div>} />
                 <Route path="/cadastrar-receita" element={<div>Cadastrar Receita</div>} />
-                <Route path="/meus-relatorios" element={<RelatoriosView />} />
             </Routes>
         </Router>
     );
