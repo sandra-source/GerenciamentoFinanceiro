@@ -16,6 +16,10 @@ npm install react-chartjs-2 chart.js
 
 npm install highcharts highcharts-react-official
 
+npm install xlsx
+
+npm install jspdf jspdf-autotable
+
 _caso qualquer comando não seja executado, por qualquer erro, basta adicionar `--legacy-peer-deps` ao comando, e então ele será executado_
 
 # Dependências Backend
