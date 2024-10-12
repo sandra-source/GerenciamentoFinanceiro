@@ -15,8 +15,8 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
     const [origem, setOrigem] = useState('');
     const [formaDePagamento, setFormaDePagamento] = useState('');
     const [dataVencimento, setDataVencimento] = useState('');
-    const [tipo, setTipo] = useState(0); // Receita como padrão
-    const [status, setStatus] = useState(2); // Pendente como padrão
+    const [tipo, setTipo] = useState(1);
+    const [status, setStatus] = useState(0); 
 
     useEffect(() => {
         if (transacao) {
