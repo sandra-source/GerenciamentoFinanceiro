@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.Infrastructure.Repositories
@@ -34,23 +33,27 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         {
             var query = _context.Transacoes.AsQueryable();
 
+            // Filtro por categoria
             if (!string.IsNullOrEmpty(categoria))
             {
                 query = query.Where(t => t.Categoria == categoria);
             }
 
+            // Filtro por status
             if (!string.IsNullOrEmpty(status))
             {
                 var statusEnum = Enum.Parse<Status>(status);
                 query = query.Where(t => t.Status == statusEnum);
             }
 
+            // Filtro por tipo de transação
             if (tipo.HasValue)
             {
                 var tipoEnum = (TipoTransacao)tipo.Value;
                 query = query.Where(t => t.Tipo == tipoEnum);
             }
 
+            // Filtro por intervalo de datas de vencimento
             if (dataInicio.HasValue)
             {
                 query = query.Where(t => t.DataVencimento >= dataInicio.Value);
@@ -61,6 +64,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.Where(t => t.DataVencimento <= dataFim.Value);
             }
 
+            // Ordenação por valor
             if (ordenacaoValor == "crescente")
             {
                 query = query.OrderBy(t => t.Valor);
@@ -70,6 +74,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.OrderByDescending(t => t.Valor);
             }
 
+            // Ordenação por data de registro
             if (ordenacaoData == "crescente")
             {
                 query = query.OrderBy(t => t.DataRegistro);
@@ -79,6 +84,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.OrderByDescending(t => t.DataRegistro);
             }
 
+            // Paginação
             query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
             return await query.ToListAsync();
@@ -96,37 +102,27 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         {
             var query = _context.Transacoes.AsQueryable();
 
-            if (!string.IsNullOrEmpty(ordenacaoValor))
-            {
-                query = ordenacaoValor == "crescente"
-                    ? query.OrderBy(t => t.Valor)
-                    : query.OrderByDescending(t => t.Valor);
-            }
-
-            if (!string.IsNullOrEmpty(ordenacaoData))
-            {
-                query = ordenacaoData == "crescente"
-                    ? query.OrderBy(t => t.DataVencimento)
-                    : query.OrderByDescending(t => t.DataVencimento);
-            }
-
+            // Filtro por categoria
             if (!string.IsNullOrEmpty(categoria))
             {
                 query = query.Where(t => t.Categoria == categoria);
             }
 
+            // Filtro por status
             if (!string.IsNullOrEmpty(status))
             {
                 var statusEnum = Enum.Parse<Status>(status);
                 query = query.Where(t => t.Status == statusEnum);
             }
 
+            // Filtro por tipo de transação
             if (tipo.HasValue)
             {
                 var tipoEnum = (TipoTransacao)tipo.Value;
                 query = query.Where(t => t.Tipo == tipoEnum);
             }
 
+            // Filtro por intervalo de datas de vencimento
             if (dataInicio.HasValue)
             {
                 query = query.Where(t => t.DataVencimento >= dataInicio.Value);
@@ -137,9 +133,9 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.Where(t => t.DataVencimento <= dataFim.Value);
             }
 
+            // Retorna o número total de transações
             return await query.CountAsync();
         }
-
 
         public async Task<IEnumerable<Transacao>> ObterTodasTransacoes()
         {

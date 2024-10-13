@@ -2,6 +2,8 @@
 using GerenciamentoFinanceiro.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.API.Controllers
 {
@@ -19,28 +21,23 @@ namespace GerenciamentoFinanceiro.API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TransacaoDTO>>> ObterTransacoes(
-        string ordenacaoValor = null,
-        string ordenacaoData = null,
-        string categoria = null,
-        string status = null,
-        int? tipo = null,
-        DateTime? dataInicio = null,
-        DateTime? dataFim = null,
-        int pageNumber = 1,
-        int pageSize = 10
-)
+            string ordenacaoValor = null,
+            string ordenacaoData = null,
+            string categoria = null,
+            string status = null,
+            int? tipo = null,
+            DateTime? dataInicio = null,
+            DateTime? dataFim = null,
+            int pageNumber = 1,
+            int pageSize = 10)
         {
             var transacoes = await _transacaoService.ObterTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim, pageNumber, pageSize);
             var totalTransacoes = await _transacaoService.ObterTotalTransacoes(ordenacaoValor, ordenacaoData, categoria, status, tipo, dataInicio, dataFim);
 
-            Response.Headers.Append("X-Total-Count", totalTransacoes.ToString()); // Enviando o total de transações nos headers
+            Response.Headers.Append("X-Total-Count", totalTransacoes.ToString());
 
             return Ok(transacoes);
         }
-
-
-
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TransacaoDTO>> ObterTransacaoPorId(int id)

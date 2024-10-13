@@ -5,7 +5,6 @@ using GerenciamentoFinanceiro.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.Application.Services
@@ -44,6 +43,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Natureza = t.Natureza,
                 DataRegistro = t.DataRegistro,
                 DataVencimento = t.DataVencimento,
+                DataPagamento = t.DataPagamento, // Adicionando DataPagamento
                 Status = t.Status,
                 Tipo = t.Tipo
             }).ToList();
@@ -78,6 +78,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Natureza = transacao.Natureza,
                 DataRegistro = transacao.DataRegistro,
                 DataVencimento = transacao.DataVencimento,
+                DataPagamento = transacao.DataPagamento, // Adicionando DataPagamento
                 Status = transacao.Status,
                 Tipo = transacao.Tipo
             };
@@ -95,12 +96,10 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Natureza = transacaoDTO.Natureza,
                 DataRegistro = DateTime.UtcNow,
                 DataVencimento = transacaoDTO.DataVencimento,
+                DataPagamento = transacaoDTO.DataPagamento, 
                 Tipo = transacaoDTO.Tipo,
                 Status = transacaoDTO.Status
             };
-
-            Console.WriteLine("DataRegistro: " + transacao.DataRegistro.ToString("o"));
-            Console.WriteLine("DataVencimento: " + transacao.DataVencimento?.ToString("o"));
 
             await _transacaoRepository.AdicionarTransacao(transacao);
         }
@@ -118,6 +117,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 transacao.Natureza = transacaoDTO.Natureza;
                 transacao.DataRegistro = transacaoDTO.DataRegistro;
                 transacao.DataVencimento = transacaoDTO.DataVencimento;
+                transacao.DataPagamento = transacaoDTO.DataPagamento; 
                 transacao.Status = transacaoDTO.Status;
                 transacao.Tipo = transacaoDTO.Tipo;
 

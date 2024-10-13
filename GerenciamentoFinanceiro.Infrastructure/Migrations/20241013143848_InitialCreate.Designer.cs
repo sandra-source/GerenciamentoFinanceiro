@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GerenciamentoFinanceiro.Infrastructure.Migrations
 {
     [DbContext(typeof(UsuariosDbContext))]
-    [Migration("20241008010401_AlterandoNomeColunaSenhaHash")]
-    partial class AlterandoNomeColunaSenhaHash
+    [Migration("20241013143848_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

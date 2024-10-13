@@ -24,10 +24,10 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         {
             int anoAtual = DateTime.Now.Year;
 
-            // Busca as transações apenas do ano atual
+            // Busca as transações apenas do ano atual, considerando a data de pagamento
             var receitasDespesas = await _context.Transacoes
-                .Where(t => t.DataVencimento.HasValue && t.DataVencimento.Value.Year == anoAtual)
-                .GroupBy(t => new { Ano = t.DataVencimento.Value.Year, Mes = t.DataVencimento.Value.Month })
+                .Where(t => t.DataPagamento.HasValue && t.DataPagamento.Value.Year == anoAtual)
+                .GroupBy(t => new { Ano = t.DataPagamento.Value.Year, Mes = t.DataPagamento.Value.Month })
                 .Select(g => new ReceitaDespesaMensal
                 {
                     Ano = g.Key.Ano,
@@ -63,6 +63,7 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
 
             return resultadoFinal;
         }
+
 
 
     }

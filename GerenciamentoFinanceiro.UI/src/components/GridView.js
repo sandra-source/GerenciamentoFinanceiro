@@ -306,15 +306,16 @@ const GridView = () => {
                                         <th>Valor</th>
                                         <th>Forma de pagamento</th>
                                         <th>Vencimento</th>
+                                        <th>Pagamento</th> 
                                         <th>Status</th>
-                                        <th>Natureza</th> {/* Adicionando o cabeçalho para Natureza */}
+                                        <th>Natureza</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan="8">Carregando...</td>
+                                            <td colSpan="9">Carregando...</td>
                                         </tr>
                                     ) : currentItems.length > 0 ? (
                                         currentItems.map((item) => (
@@ -325,15 +326,16 @@ const GridView = () => {
                                                 <td>{FormaDePagamento[item.formaDePagamento] || 'N/A'}</td> 
                                                 <td>
                                                     {item.dataVencimento
-                                                        ? new Date(item.dataVencimento).toLocaleDateString('pt-BR', {
-                                                            day: '2-digit',
-                                                            month: '2-digit',
-                                                            year: 'numeric',
-                                                        })
+                                                        ? item.dataVencimento.substring(0, 10).split('-').reverse().join('/')
+                                                        : 'N/A'}
+                                                </td>
+                                                <td>
+                                                    {item.dataPagamento
+                                                        ? item.dataPagamento.substring(0, 10).split('-').reverse().join('/')
                                                         : 'N/A'}
                                                 </td>
                                                 <td>{Status[item.status] || 'N/A'}</td>
-                                                <td>{Natureza[item.natureza] || 'N/A'}</td> {/* Exibindo a Natureza */}
+                                                <td>{Natureza[item.natureza] || 'N/A'}</td>
                                                 <td>
                                                     <FaEdit
                                                         onClick={() => handleEdit(item.id)}
@@ -350,7 +352,7 @@ const GridView = () => {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="8">Nenhuma transação encontrada</td>
+                                            <td colSpan="9">Nenhuma transação encontrada</td>
                                         </tr>
                                     )}
                                 </tbody>

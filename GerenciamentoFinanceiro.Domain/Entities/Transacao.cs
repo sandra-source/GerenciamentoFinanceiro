@@ -18,6 +18,7 @@ namespace GerenciamentoFinanceiro.Domain.Entities
         public Natureza Natureza { get; set; }
         public DateTime DataRegistro { get; set; }
         public DateTime? DataVencimento { get; set; }
+        public DateTime? DataPagamento { get; set; }
         public Status Status { get; set; } 
         public TipoTransacao Tipo { get; set; } 
     }

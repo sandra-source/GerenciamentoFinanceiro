@@ -28,6 +28,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
     const [origem, setOrigem] = useState('');
     const [formaDePagamento, setFormaDePagamento] = useState(0); // Inicializando como enum
     const [dataVencimento, setDataVencimento] = useState('');
+    const [dataPagamento, setDataPagamento] = useState(''); // Novo estado para Data de Pagamento
     const [tipo, setTipo] = useState(1);
     const [status, setStatus] = useState(0);
     const [natureza, setNatureza] = useState(0);
@@ -43,6 +44,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
             setTipo(transacao.tipo);
             setStatus(transacao.status);
             setNatureza(transacao.natureza || 0);
+            setDataPagamento(transacao.dataPagamento ? new Date(transacao.dataPagamento).toISOString().split('T')[0] : ''); // Preencher DataPagamento se existir
         } else {
             resetForm();
         }
@@ -58,6 +60,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
             origem,
             formaDePagamento: parseInt(formaDePagamento), // Tratando como número
             dataVencimento: dataVencimento ? new Date(dataVencimento).toISOString() : null,
+            dataPagamento: dataPagamento ? new Date(dataPagamento).toISOString() : null, // Adicionando a data de pagamento
             tipo: parseInt(tipo),
             status: parseInt(status),
             natureza: parseInt(natureza)
@@ -79,6 +82,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
         setOrigem('');
         setFormaDePagamento(0);
         setDataVencimento('');
+        setDataPagamento(''); // Resetando Data de Pagamento
         setTipo(0);
         setStatus(0);
         setNatureza(0);
@@ -147,6 +151,13 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
                         value={dataVencimento}
                         onChange={(e) => setDataVencimento(e.target.value)} 
                         required
+                    />
+                    <label>Data de Pagamento</label> {/* Novo campo para Data de Pagamento */}
+                    <input 
+                        type="date" 
+                        placeholder="Data de Pagamento" 
+                        value={dataPagamento}
+                        onChange={(e) => setDataPagamento(e.target.value)} 
                     />
                     <label>Tipo</label>
                     <select 
