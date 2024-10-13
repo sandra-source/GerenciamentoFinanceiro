@@ -9,3 +9,24 @@ export const obterReceitasDespesasPorMes = async () => {
         throw error;
     }
 };
+
+export const obterDistribuicaoReceitasDespesas = async () => {
+    try {
+        const response = await api.get('/dashboard/distribuicao-receitas-despesas');
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao buscar dados de distribuição de receitas e despesas:', error);
+        throw error;
+    }
+};
+
+// Nova função para obter a quantidade de receitas e despesas pagas por mês
+export const obterReceitasDespesasPagasPorMes = async () => {
+    try {
+        const response = await api.get('/dashboard/receitas-despesas-pagas-por-mes');
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao buscar dados de receitas e despesas pagas:', error);
+        throw error;
+    }
+};

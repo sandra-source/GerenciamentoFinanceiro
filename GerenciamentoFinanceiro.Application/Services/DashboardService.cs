@@ -1,10 +1,9 @@
 ﻿using GerenciamentoFinanceiro.Application.DTOs;
 using GerenciamentoFinanceiro.Application.Interfaces;
+using GerenciamentoFinanceiro.Domain.Entities;
 using GerenciamentoFinanceiro.Domain.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GerenciamentoFinanceiro.Application.Services
@@ -32,6 +31,25 @@ namespace GerenciamentoFinanceiro.Application.Services
 
             return receitasDespesasDTO;
         }
-    }
 
+        public async Task<DistribuicaoReceitasDespesas> ObterDistribuicaoReceitasDespesas()
+        {
+            var distribuicao = await _dashboardRepository.ObterDistribuicaoReceitasDespesas();
+            return distribuicao;
+        }
+
+        public async Task<ReceitasDespesasPagasPorMes> ObterReceitasDespesasPagasPorMes()
+        {
+            var receitasDespesasPagas = await _dashboardRepository.ObterReceitasDespesasPagasPorMes();
+
+            return new ReceitasDespesasPagasPorMes
+            {
+                ReceitasPagasNoPrazo = receitasDespesasPagas.ReceitasPagasNoPrazo,
+                DespesasPagasNoPrazo = receitasDespesasPagas.DespesasPagasNoPrazo,
+                ReceitasPagasAposVencimento = receitasDespesasPagas.ReceitasPagasAposVencimento,
+                DespesasPagasAposVencimento = receitasDespesasPagas.DespesasPagasAposVencimento
+            };
+        }
+
+    }
 }

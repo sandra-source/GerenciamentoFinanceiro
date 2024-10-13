@@ -10,5 +10,7 @@ namespace GerenciamentoFinanceiro.Domain.Interfaces
     public interface IDashboardRepository
     {
         Task<IEnumerable<ReceitaDespesaMensal>> ObterReceitasDespesasPorMes();
+        Task<DistribuicaoReceitasDespesas> ObterDistribuicaoReceitasDespesas();
+        Task<ReceitasDespesasPagasPorMes> ObterReceitasDespesasPagasPorMes();
     }
 }
