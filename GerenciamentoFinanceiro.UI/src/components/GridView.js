@@ -221,7 +221,9 @@ const GridView = () => {
                         {mostrarDashboardComponent && (
                             <li><a onClick={mostrarHome}><FaHome size={24} title="Home" /></a></li>
                         )}
-                        <li><a onClick={handleOpenModal}>Cadastrar Transação</a></li>
+                        {!mostrarDashboardComponent && (
+                            <li><a onClick={handleOpenModal}>Cadastrar Transação</a></li>
+                        )}
                         <li><a onClick={mostrarDashboard}>Meu Dashboard</a></li>
                     </ul>
                     <div className="logout-icon" onClick={handleLogout}>
@@ -290,10 +292,10 @@ const GridView = () => {
                         <div className="grid-view">
                             <div className="grid-actions-container">
                                 <button className="export-button pdf" onClick={handleExportPdf}>
-                                    <FaFilePdf /> Exportar em PDF
+                                    <FaFilePdf /> Relatório em PDF
                                 </button>
                                 <button className="export-button excel" onClick={handleExportExcel}>
-                                    <FaFileExcel /> Exportar em Excel
+                                    <FaFileExcel /> Relatório em Excel
                                 </button>
                             </div>
                             <table>
