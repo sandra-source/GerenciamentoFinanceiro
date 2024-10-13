@@ -99,18 +99,16 @@ export const exportToPdf = (data) => {
     doc.save(`relatorio_transacoes_${new Date().toISOString().slice(0, 10)}.pdf`);
 };
 
-// Função para exportar para Excel
 export const exportToExcel = (data) => {
-    // Mapeia os dados para incluir o nome do tipo, status, natureza e formatação de valor
     const formattedData = data.map(item => ({
-        Tipo: getTipoNome(item.tipo), // Mapeia o tipo para o nome
+        Tipo: getTipoNome(item.tipo), 
         Descrição: item.descricao,
-        "Valor (R$)": formatarValor(item.valor), // Formata o valor como "R$"
-        "Forma de pagamento": getFormaPagamentoNome(item.formaDePagamento), // Mapeia a forma de pagamento
+        "Valor (R$)": formatarValor(item.valor), 
+        "Forma de pagamento": getFormaPagamentoNome(item.formaDePagamento), 
         Vencimento: item.dataVencimento ? item.dataVencimento.substring(0, 10).split('-').reverse().join('/') : 'N/A',
         Pagamento: item.dataPagamento ? item.dataPagamento.substring(0, 10).split('-').reverse().join('/') : 'N/A',
-        Status: getStatusNome(item.status), // Mapeia o status para o nome
-        Natureza: getNaturezaNome(item.natureza) // Mapeia a natureza para o nome
+        Status: getStatusNome(item.status), 
+        Natureza: getNaturezaNome(item.natureza) 
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(formattedData);

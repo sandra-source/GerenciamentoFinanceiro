@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filtrarTransacoes } from '../redux/actions';
-import { FaSignOutAlt, FaEdit, FaTrash, FaHome, FaFilePdf, FaFileExcel } from 'react-icons/fa';
+import { FaSignOutAlt, FaEdit, FaTrash, FaHome, FaFilePdf, FaFileExcel, FaCheckCircle, FaTimesCircle, FaExclamationCircle } from 'react-icons/fa';
 import ModalTransacao from './ModalTransacao.js';
 import ConfirmacaoModal from './ConfirmacaoModal.js';
 import HeaderOptions from './HeaderOptions.js';
@@ -143,7 +143,6 @@ const GridView = () => {
         }).finally(() => setIsLoading(false));
     };
 
-    // Atualizar a página atual se necessário
     useEffect(() => {
         if (currentPage > totalPages) {
             setCurrentPage(1);
@@ -174,6 +173,21 @@ const GridView = () => {
         return sortedTransacoes;
     };
 
+    const getTransactionStatusIcon = (item) => {
+        const vencimento = new Date(item.dataVencimento);
+        const hoje = new Date();
+        const diffEmDias = (vencimento - hoje) / (1000 * 60 * 60 * 24);
+
+        if (item.status === 1) {
+            return <FaCheckCircle className="icon-check" title="Pago" />;
+        } else if (diffEmDias < 0) {
+            return <FaTimesCircle className="icon-times" title="Vencido" />;
+        } else if (diffEmDias <= 30) {
+            return <FaExclamationCircle className="icon-warning" title="Próximo do Vencimento" />;
+        }
+        return null;
+    };
+
     const transacoesOrdenadas = ordenarTransacoes(transacoes);
 
     const currentItems = transacoesOrdenadas;
@@ -196,7 +210,6 @@ const GridView = () => {
         sessionStorage.setItem("Token", "");
     };
 
-    // Carregar os dados iniciais
     useEffect(() => {
         aplicarFiltros();
     }, []);
@@ -301,6 +314,7 @@ const GridView = () => {
                             <table>
                                 <thead>
                                     <tr>
+                                        <th></th> 
                                         <th>Tipo</th>
                                         <th>Descrição</th>
                                         <th>Valor</th>
@@ -315,11 +329,12 @@ const GridView = () => {
                                 <tbody>
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan="9">Carregando...</td>
+                                            <td colSpan="10">Carregando...</td>
                                         </tr>
                                     ) : currentItems.length > 0 ? (
                                         currentItems.map((item) => (
                                             <tr key={item.id}>
+                                                <td>{getTransactionStatusIcon(item)}</td> 
                                                 <td>{TipoTransacao[item.tipo] || 'N/A'}</td>
                                                 <td>{item.descricao}</td>
                                                 <td>{item.valor}</td>
@@ -352,7 +367,7 @@ const GridView = () => {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="9">Nenhuma transação encontrada</td>
+                                            <td colSpan="10">Nenhuma transação encontrada</td>
                                         </tr>
                                     )}
                                 </tbody>
@@ -361,7 +376,7 @@ const GridView = () => {
                                 {Array.from({ length: totalPages }, (_, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => paginate(index + 1)}  // Atualiza a página atual corretamente
+                                        onClick={() => paginate(index + 1)}  
                                         className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
                                     >
                                         {index + 1}

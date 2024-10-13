@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { thunk } from 'redux-thunk'; // Corrigindo a importação do thunk
-import transacoesReducer from './transacoesReducer'; // Ajuste para usar transações
+import { thunk } from 'redux-thunk'; 
+import transacoesReducer from './transacoesReducer'; 
 
 const rootReducer = combineReducers({
-    transacoes: transacoesReducer, // Utilize transações como a chave principal
+    transacoes: transacoesReducer,
 });
   
 const store = createStore(

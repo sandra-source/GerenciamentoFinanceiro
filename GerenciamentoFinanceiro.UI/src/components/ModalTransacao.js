@@ -26,9 +26,9 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
     const [valor, setValor] = useState('');
     const [categoria, setCategoria] = useState('');
     const [origem, setOrigem] = useState('');
-    const [formaDePagamento, setFormaDePagamento] = useState(0); // Inicializando como enum
+    const [formaDePagamento, setFormaDePagamento] = useState(0); 
     const [dataVencimento, setDataVencimento] = useState('');
-    const [dataPagamento, setDataPagamento] = useState(''); // Novo estado para Data de Pagamento
+    const [dataPagamento, setDataPagamento] = useState(''); 
     const [tipo, setTipo] = useState(1);
     const [status, setStatus] = useState(0);
     const [natureza, setNatureza] = useState(0);
@@ -44,7 +44,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
             setTipo(transacao.tipo);
             setStatus(transacao.status);
             setNatureza(transacao.natureza || 0);
-            setDataPagamento(transacao.dataPagamento ? new Date(transacao.dataPagamento).toISOString().split('T')[0] : ''); // Preencher DataPagamento se existir
+            setDataPagamento(transacao.dataPagamento ? new Date(transacao.dataPagamento).toISOString().split('T')[0] : ''); 
         } else {
             resetForm();
         }
@@ -58,9 +58,9 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
             valor: parseFloat(valor),
             categoria,
             origem,
-            formaDePagamento: parseInt(formaDePagamento), // Tratando como número
+            formaDePagamento: parseInt(formaDePagamento), 
             dataVencimento: dataVencimento ? new Date(dataVencimento).toISOString() : null,
-            dataPagamento: dataPagamento ? new Date(dataPagamento).toISOString() : null, // Adicionando a data de pagamento
+            dataPagamento: dataPagamento ? new Date(dataPagamento).toISOString() : null, 
             tipo: parseInt(tipo),
             status: parseInt(status),
             natureza: parseInt(natureza)
@@ -82,7 +82,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
         setOrigem('');
         setFormaDePagamento(0);
         setDataVencimento('');
-        setDataPagamento(''); // Resetando Data de Pagamento
+        setDataPagamento(''); 
         setTipo(0);
         setStatus(0);
         setNatureza(0);
@@ -137,7 +137,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
                     <label>Forma de Pagamento</label>
                     <select 
                         value={formaDePagamento} 
-                        onChange={(e) => setFormaDePagamento(parseInt(e.target.value))} // Usando o enum
+                        onChange={(e) => setFormaDePagamento(parseInt(e.target.value))} 
                         required
                     >
                         {Object.keys(FormaDePagamento).map((key) => (
@@ -152,7 +152,7 @@ const ModalTransacao = ({ isOpen, onClose, onSubmit, transacao }) => {
                         onChange={(e) => setDataVencimento(e.target.value)} 
                         required
                     />
-                    <label>Data de Pagamento</label> {/* Novo campo para Data de Pagamento */}
+                    <label>Data de Pagamento</label> 
                     <input 
                         type="date" 
                         placeholder="Data de Pagamento" 

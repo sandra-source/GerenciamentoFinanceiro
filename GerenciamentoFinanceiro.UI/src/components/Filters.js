@@ -29,7 +29,6 @@ const Filters = () => {
           <option value="despesas">Despesas</option>
         </select>
       </label>
-      {/* Adicionar outros filtros conforme necessário */}
     </div>
   );
 };

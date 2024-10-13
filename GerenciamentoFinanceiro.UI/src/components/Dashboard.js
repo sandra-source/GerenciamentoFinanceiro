@@ -75,7 +75,7 @@ const Dashboard = () => {
             }
         },
         credits: {
-            enabled: false // Remove a marca d'água "highcharts.com"
+            enabled: false 
         },
         series: [{
             name: 'Receitas',

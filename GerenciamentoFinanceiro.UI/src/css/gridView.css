@@ -304,7 +304,6 @@ table tr:last-child td {
     margin-bottom: 15px;
 }
 
-/* paginação */
 .pagination-container {
     display: flex;
     justify-content: center;
@@ -330,4 +329,19 @@ table tr:last-child td {
     background-color: #007bff;
     color: white;
     border-color: #007bff;
+}
+
+.icon-check {
+    color: green;
+    font-size: 20px;
+}
+
+.icon-times {
+    color: red;
+    font-size: 20px;
+}
+
+.icon-warning {
+    color: orange;
+    font-size: 20px;
 }

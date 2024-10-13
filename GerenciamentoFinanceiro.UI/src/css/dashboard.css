@@ -1,6 +1,6 @@
 .dashboard-container {
     width: 100%;
-    height: 100vh; /* Ocupa toda a altura da tela */
+    height: 100vh; 
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -13,7 +13,7 @@
 }
 
 body {
-    margin: 0; /* Remove margens padrão do body */
+    margin: 0; 
     padding: 0;
     box-sizing: border-box;
 }
@@ -30,7 +30,7 @@ h2 {
     align-items: stretch;
     gap: 20px;
     flex-wrap: wrap;
-    height: 48%; /* Ajuste a altura das linhas para caberem na tela */
+    height: 48%; 
 }
 
 .chart-container {
@@ -61,8 +61,8 @@ h2 {
 }
 
 .small-chart {
-    flex: 1 1 30%; /* Reduz a largura do gráfico */
-    max-width: 350px; /* Limita a largura máxima */
+    flex: 1 1 30%; 
+    max-width: 350px;
 }
 
 @media (max-width: 1024px) {
@@ -74,7 +74,7 @@ h2 {
 
 @media (max-width: 768px) {
     .charts-row {
-        flex-direction: column; /* Empilha os gráficos em telas pequenas */
+        flex-direction: column;
         height: auto;
     }
 

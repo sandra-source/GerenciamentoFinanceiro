@@ -1,4 +1,3 @@
-// HeaderOptions.js
 import React from 'react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import '../css/styles.css';

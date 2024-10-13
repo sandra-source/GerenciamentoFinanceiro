@@ -15,7 +15,6 @@ export const login = async (email, password) => {
   }
 };
 
-// Interceptor para adicionar o token de autenticação
 api.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('Token');

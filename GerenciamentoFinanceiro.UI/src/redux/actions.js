@@ -12,7 +12,7 @@ export const filtrarTransacoes = (filtros, pageNumber = 1, pageSize = 10) => asy
         dispatch(limparTransacoes());
 
         const response = await buscarTransacoes(filtros, pageNumber, pageSize); 
-        console.log('Resposta da API após a paginação:', response.data); // Verifique a resposta da API
+        console.log('Resposta da API após a paginação:', response.data); 
 
         const transacoes = response.data.map(t => ({ ...t })); 
         

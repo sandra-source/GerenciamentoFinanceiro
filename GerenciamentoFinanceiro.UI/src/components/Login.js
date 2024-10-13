@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
 import '../css/login.css';
@@ -11,7 +10,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrorMessage(''); // Limpa qualquer mensagem de erro anterior
+        setErrorMessage(''); 
 
         try {
             const data = await login(email, password);
