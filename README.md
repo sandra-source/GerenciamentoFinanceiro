@@ -20,7 +20,7 @@ No arquivo `appsettings.json`, configure sua string de conexão ao banco de dado
 
 Substitua "SeuUsuario" pelo seu usuário do PostgreSQL, bem como o "SuaSenha" por sua senha real.
 
-<h2>Criação das tabelas:</h2>
+<h2>Atualização das tabelas:</h2>
 
 Mac, Linux (CLI):
 
