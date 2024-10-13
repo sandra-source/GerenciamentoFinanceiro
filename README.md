@@ -37,3 +37,26 @@ Windows(Visual Studio) (NuGet Package Console):
 Cada DbContext representa um conjunto específico de tabelas e migrações que precisam ser aplicadas separadamente.
 
 
+# Como rodar o projeto
+
+- Para rodar o projeto, clique com o botão direito no GerenciamentoFinanceiro.API "set as startup project"
+- Inicie o projeto back-end (porta padrão 7024)
+- Abra GerenciamentoFinanceiro.UI no terminal, após instalar as dependencias do front-end, e use `npm start
+
+Como o projeto ainda carece ded uma tela de cadastro de usuários, por favor, no postman, após executar o projeto, cadastre um usuário manualmente:
+
+POST: https://localhost:7024/api/auth/novo-usuario
+
+raw - json:
+<pre>{
+    "id": 0,
+    "nome": "Sandra",
+    "email": "Sandra@email.com",
+    "senha": "senha123",
+    "role": "Admin"
+}</pre>
+
+todos os usuários são fictícios para fins de teste da aplicação.
+  
+
+
