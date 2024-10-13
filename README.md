@@ -39,6 +39,7 @@ Cada DbContext representa um conjunto específico de tabelas e migrações que p
 
 # Como rodar o projeto
 
+- Abra `GerenciamentoFinanceiro.sln`
 - Para rodar o projeto, clique com o botão direito no GerenciamentoFinanceiro.API "set as startup project"
 - Inicie o projeto back-end (porta padrão 7024)
 - Abra GerenciamentoFinanceiro.UI no terminal, após instalar as dependencias do front-end, e use `npm start`
