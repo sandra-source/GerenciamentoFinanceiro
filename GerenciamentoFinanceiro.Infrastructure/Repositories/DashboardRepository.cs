@@ -22,8 +22,11 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
 
         public async Task<IEnumerable<ReceitaDespesaMensal>> ObterReceitasDespesasPorMes()
         {
-            return await _context.Transacoes
-                .Where(t => t.DataVencimento.HasValue)
+            int anoAtual = DateTime.Now.Year;
+
+            // Busca as transações apenas do ano atual
+            var receitasDespesas = await _context.Transacoes
+                .Where(t => t.DataVencimento.HasValue && t.DataVencimento.Value.Year == anoAtual)
                 .GroupBy(t => new { Ano = t.DataVencimento.Value.Year, Mes = t.DataVencimento.Value.Month })
                 .Select(g => new ReceitaDespesaMensal
                 {
@@ -33,7 +36,35 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                     TotalDespesas = g.Where(t => t.Tipo == TipoTransacao.Despesa).Sum(t => t.Valor)
                 })
                 .ToListAsync();
+
+            // Garante que todos os meses de janeiro a dezembro estejam presentes
+            var resultadoFinal = new List<ReceitaDespesaMensal>();
+
+            for (int mes = 1; mes <= 12; mes++)
+            {
+                // Procura se já temos dados para este mês no ano atual
+                var dadosMes = receitasDespesas.FirstOrDefault(rd => rd.Mes == mes);
+                if (dadosMes != null)
+                {
+                    resultadoFinal.Add(dadosMes);
+                }
+                else
+                {
+                    // Se não houver dados para o mês, adiciona um registro com receitas e despesas zeradas
+                    resultadoFinal.Add(new ReceitaDespesaMensal
+                    {
+                        Ano = anoAtual,  // Sempre o ano atual
+                        Mes = mes,       // Mês corrente
+                        TotalReceitas = 0,
+                        TotalDespesas = 0
+                    });
+                }
+            }
+
+            return resultadoFinal;
         }
+
+
     }
 
 }
