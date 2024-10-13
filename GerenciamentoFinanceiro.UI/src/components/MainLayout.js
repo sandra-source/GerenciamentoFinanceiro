@@ -1,4 +1,3 @@
-// MainLayout.js
 import React from 'react';
 import HeaderOptions from './HeaderOptions';
 import ModalTransacao from './ModalTransacao';

@@ -20,7 +20,6 @@ export const obterDistribuicaoReceitasDespesas = async () => {
     }
 };
 
-// Nova função para obter a quantidade de receitas e despesas pagas por mês
 export const obterReceitasDespesasPagasPorMes = async () => {
     try {
         const response = await api.get('/dashboard/receitas-despesas-pagas-por-mes');
