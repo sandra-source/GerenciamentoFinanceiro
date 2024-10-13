@@ -1,5 +1,5 @@
-using GerenciamentoFinanceiro.Application.Interfaces;  // Interfaces dos serviços
-using GerenciamentoFinanceiro.Application.Services;   // Implementações dos serviços
+using GerenciamentoFinanceiro.Application.Interfaces; 
+using GerenciamentoFinanceiro.Application.Services;  
 using GerenciamentoFinanceiro.Domain.Interfaces;
 using GerenciamentoFinanceiro.Infrastructure.Data;
 using GerenciamentoFinanceiro.Infrastructure.Repositories;

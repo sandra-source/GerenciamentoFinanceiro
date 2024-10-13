@@ -43,7 +43,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Natureza = t.Natureza,
                 DataRegistro = t.DataRegistro,
                 DataVencimento = t.DataVencimento,
-                DataPagamento = t.DataPagamento, // Adicionando DataPagamento
+                DataPagamento = t.DataPagamento, 
                 Status = t.Status,
                 Tipo = t.Tipo
             }).ToList();
@@ -78,7 +78,7 @@ namespace GerenciamentoFinanceiro.Application.Services
                 Natureza = transacao.Natureza,
                 DataRegistro = transacao.DataRegistro,
                 DataVencimento = transacao.DataVencimento,
-                DataPagamento = transacao.DataPagamento, // Adicionando DataPagamento
+                DataPagamento = transacao.DataPagamento, 
                 Status = transacao.Status,
                 Tipo = transacao.Tipo
             };

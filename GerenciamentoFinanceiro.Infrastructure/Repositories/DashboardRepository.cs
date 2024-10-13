@@ -89,51 +89,46 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         {
             int anoAtual = DateTime.Now.Year;
 
-            // Receitas pagas no prazo
             var receitasPagasNoPrazo = await _context.Transacoes
                 .Where(t => t.Tipo == TipoTransacao.Receita
                     && t.Status == Status.Pago
                     && t.DataPagamento.HasValue
                     && t.DataPagamento.Value.Year == anoAtual
-                    && t.DataPagamento.Value <= t.DataVencimento)  // Pagas no prazo
+                    && t.DataPagamento.Value <= t.DataVencimento)  
                 .GroupBy(t => t.DataPagamento.Value.Month)
                 .Select(g => new { Mes = g.Key, Quantidade = g.Count() })
                 .ToDictionaryAsync(g => g.Mes, g => g.Quantidade);
 
-            // Despesas pagas no prazo
             var despesasPagasNoPrazo = await _context.Transacoes
                 .Where(t => t.Tipo == TipoTransacao.Despesa
                     && t.Status == Status.Pago
                     && t.DataPagamento.HasValue
                     && t.DataPagamento.Value.Year == anoAtual
-                    && t.DataPagamento.Value <= t.DataVencimento)  // Pagas no prazo
+                    && t.DataPagamento.Value <= t.DataVencimento)  
                 .GroupBy(t => t.DataPagamento.Value.Month)
                 .Select(g => new { Mes = g.Key, Quantidade = g.Count() })
                 .ToDictionaryAsync(g => g.Mes, g => g.Quantidade);
 
-            // Receitas pagas após o vencimento
             var receitasPagasAposVencimento = await _context.Transacoes
                 .Where(t => t.Tipo == TipoTransacao.Receita
                     && t.Status == Status.Pago
                     && t.DataPagamento.HasValue
                     && t.DataPagamento.Value.Year == anoAtual
-                    && t.DataPagamento.Value > t.DataVencimento)  // Pagas após vencimento
+                    && t.DataPagamento.Value > t.DataVencimento)  
                 .GroupBy(t => t.DataPagamento.Value.Month)
                 .Select(g => new { Mes = g.Key, Quantidade = g.Count() })
                 .ToDictionaryAsync(g => g.Mes, g => g.Quantidade);
 
-            // Despesas pagas após o vencimento
             var despesasPagasAposVencimento = await _context.Transacoes
                 .Where(t => t.Tipo == TipoTransacao.Despesa
                     && t.Status == Status.Pago
                     && t.DataPagamento.HasValue
                     && t.DataPagamento.Value.Year == anoAtual
-                    && t.DataPagamento.Value > t.DataVencimento)  // Pagas após vencimento
+                    && t.DataPagamento.Value > t.DataVencimento)  
                 .GroupBy(t => t.DataPagamento.Value.Month)
                 .Select(g => new { Mes = g.Key, Quantidade = g.Count() })
                 .ToDictionaryAsync(g => g.Mes, g => g.Quantidade);
 
-            // Garantir que todos os meses de janeiro a dezembro estejam representados
             var receitasNoPrazoPorMes = new int[12];
             var despesasNoPrazoPorMes = new int[12];
             var receitasAtrasadasPorMes = new int[12];

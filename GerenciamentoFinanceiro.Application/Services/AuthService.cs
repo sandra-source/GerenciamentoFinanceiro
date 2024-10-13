@@ -47,10 +47,10 @@ namespace GerenciamentoFinanceiro.Application.Services
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.SenhaHash))
             {
-                return null;  // Usuário ou senha inválidos
+                return null;  
             }
 
-            return user;  // Retornar o usuário se a autenticação foi bem-sucedida
+            return user;  
         }
     }
 }

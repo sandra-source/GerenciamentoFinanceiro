@@ -29,7 +29,7 @@ namespace GerenciamentoFinanceiro.API.Controllers
 
             if (usuario == null)
             {
-                return Unauthorized();  // Usuário ou senha incorretos
+                return Unauthorized();  
             }
 
             var token = await GenerateJwtTokenAsync(usuario.Email);

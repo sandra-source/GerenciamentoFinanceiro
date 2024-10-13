@@ -33,27 +33,23 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         {
             var query = _context.Transacoes.AsQueryable();
 
-            // Filtro por categoria
             if (!string.IsNullOrEmpty(categoria))
             {
                 query = query.Where(t => t.Categoria == categoria);
             }
 
-            // Filtro por status
             if (!string.IsNullOrEmpty(status))
             {
                 var statusEnum = Enum.Parse<Status>(status);
                 query = query.Where(t => t.Status == statusEnum);
             }
 
-            // Filtro por tipo de transação
             if (tipo.HasValue)
             {
                 var tipoEnum = (TipoTransacao)tipo.Value;
                 query = query.Where(t => t.Tipo == tipoEnum);
             }
 
-            // Filtro por intervalo de datas de vencimento
             if (dataInicio.HasValue)
             {
                 query = query.Where(t => t.DataVencimento >= dataInicio.Value);
@@ -64,7 +60,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.Where(t => t.DataVencimento <= dataFim.Value);
             }
 
-            // Ordenação por valor
             if (ordenacaoValor == "crescente")
             {
                 query = query.OrderBy(t => t.Valor);
@@ -74,7 +69,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.OrderByDescending(t => t.Valor);
             }
 
-            // Ordenação por data de registro
             if (ordenacaoData == "crescente")
             {
                 query = query.OrderBy(t => t.DataRegistro);
@@ -84,7 +78,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.OrderByDescending(t => t.DataRegistro);
             }
 
-            // Paginação
             query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
             return await query.ToListAsync();
@@ -102,27 +95,23 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
         {
             var query = _context.Transacoes.AsQueryable();
 
-            // Filtro por categoria
             if (!string.IsNullOrEmpty(categoria))
             {
                 query = query.Where(t => t.Categoria == categoria);
             }
 
-            // Filtro por status
             if (!string.IsNullOrEmpty(status))
             {
                 var statusEnum = Enum.Parse<Status>(status);
                 query = query.Where(t => t.Status == statusEnum);
             }
 
-            // Filtro por tipo de transação
             if (tipo.HasValue)
             {
                 var tipoEnum = (TipoTransacao)tipo.Value;
                 query = query.Where(t => t.Tipo == tipoEnum);
             }
 
-            // Filtro por intervalo de datas de vencimento
             if (dataInicio.HasValue)
             {
                 query = query.Where(t => t.DataVencimento >= dataInicio.Value);
@@ -133,7 +122,6 @@ namespace GerenciamentoFinanceiro.Infrastructure.Repositories
                 query = query.Where(t => t.DataVencimento <= dataFim.Value);
             }
 
-            // Retorna o número total de transações
             return await query.CountAsync();
         }
 
