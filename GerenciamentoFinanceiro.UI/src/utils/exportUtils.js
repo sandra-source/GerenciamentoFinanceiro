@@ -39,7 +39,6 @@ const getNaturezaNome = (natureza) => {
     }
 };
 
-// Mapeia a forma de pagamento com base no enum FormaPagamento
 const getFormaPagamentoNome = (formaDePagamento) => {
     switch (formaDePagamento) {
         case 0:
@@ -58,10 +57,9 @@ const getFormaPagamentoNome = (formaDePagamento) => {
 };
 
 const formatarValor = (valor) => {
-    return `R$ ${valor.toFixed(2).replace('.', ',')}`; // Converte para duas casas decimais e usa vírgula para centavos
+    return `R$ ${valor.toFixed(2).replace('.', ',')}`; 
 };
 
-// Função para exportar para PDF
 export const exportToPdf = (data) => {
     const doc = new jsPDF();
     const tableColumn = [
@@ -73,19 +71,19 @@ export const exportToPdf = (data) => {
         "Pagamento", 
         "Status", 
         "Natureza"
-    ]; // Colunas da tabela PDF
+    ];
     const tableRows = [];
 
     data.forEach(item => {
         const rowData = [
-            getTipoNome(item.tipo), // Mapeia o tipo para o nome
+            getTipoNome(item.tipo), 
             item.descricao,
-            formatarValor(item.valor), // Formata o valor como "R$"
-            getFormaPagamentoNome(item.formaDePagamento), // Mapeia a forma de pagamento
-            item.dataVencimento ? item.dataVencimento.substring(0, 10).split('-').reverse().join('/') : 'N/A', // Mostra vencimento
-            item.dataPagamento ? item.dataPagamento.substring(0, 10).split('-').reverse().join('/') : 'N/A', // Mostra pagamento
-            getStatusNome(item.status), // Mapeia o status para o nome
-            getNaturezaNome(item.natureza) // Mapeia a natureza para o nome
+            formatarValor(item.valor), 
+            getFormaPagamentoNome(item.formaDePagamento), 
+            item.dataVencimento ? item.dataVencimento.substring(0, 10).split('-').reverse().join('/') : 'N/A', 
+            item.dataPagamento ? item.dataPagamento.substring(0, 10).split('-').reverse().join('/') : 'N/A', 
+            getStatusNome(item.status), 
+            getNaturezaNome(item.natureza) 
         ];
         tableRows.push(rowData);
     });

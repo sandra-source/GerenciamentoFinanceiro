@@ -7,12 +7,11 @@ import '../css/dashboard.css';
 const Dashboard = () => {
     const [receitasPorMes, setReceitasPorMes] = useState(Array(12).fill(0));  
     const [despesasPorMes, setDespesasPorMes] = useState(Array(12).fill(0));  
-    const [dadosDistribuicao, setDadosDistribuicao] = useState({});  // Dados da distribuição de receitas/despesas
-    const [receitasPagasPorMes, setReceitasPagasPorMes] = useState([]);  // Dados de receitas pagas por mês
-    const [despesasPagasPorMes, setDespesasPagasPorMes] = useState([]);  // Dados de despesas pagas por mês
+    const [dadosDistribuicao, setDadosDistribuicao] = useState({});  
+    const [receitasPagasPorMes, setReceitasPagasPorMes] = useState([]); 
+    const [despesasPagasPorMes, setDespesasPagasPorMes] = useState([]); 
     const [isLoading, setIsLoading] = useState(true);
 
-    // Meses do ano em ordem
     const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
     useEffect(() => {
@@ -32,11 +31,9 @@ const Dashboard = () => {
                 setReceitasPorMes(receitasTemp);
                 setDespesasPorMes(despesasTemp);
 
-                // Carregar os dados da distribuição de receitas e despesas
                 const dadosDistribuicao = await obterDistribuicaoReceitasDespesas();
                 setDadosDistribuicao(dadosDistribuicao);
 
-                // Carregar os dados de receitas e despesas pagas por mês
                 const receitasDespesasPagas = await obterReceitasDespesasPagasPorMes();
                 setReceitasPagasPorMes(receitasDespesasPagas.receitasPagasNoPrazo.concat(receitasDespesasPagas.receitasPagasAposVencimento));
                 setDespesasPagasPorMes(receitasDespesasPagas.despesasPagasNoPrazo.concat(receitasDespesasPagas.despesasPagasAposVencimento));
@@ -51,7 +48,6 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
-    // Verifica se todos os valores são zero para esconder o gráfico se necessário
     const todosZeros = 
         dadosDistribuicao.receitasPagasAtraso === 0 &&
         dadosDistribuicao.receitasPagasPrazo === 0 &&
@@ -101,7 +97,7 @@ const Dashboard = () => {
             }
         },
         credits: {
-            enabled: false // Remove a marca d'água "highcharts.com"
+            enabled: false 
         },
         series: [{
             name: 'Despesas',
@@ -110,7 +106,6 @@ const Dashboard = () => {
         }]
     };
 
-    // Gráfico de pizza com a distribuição de receitas e despesas
     const pieDespesasReceitasPagasAno = {
         chart:{
             width: 800,
@@ -125,7 +120,7 @@ const Dashboard = () => {
             }
         },
         credits: {
-            enabled: false // Remove a marca d'água "highcharts.com"
+            enabled: false 
         },
         series: [{
             name: 'Transações',
