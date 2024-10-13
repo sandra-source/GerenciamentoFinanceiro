@@ -5,8 +5,8 @@ import { obterReceitasDespesasPorMes } from '../services/dashboardService';
 import '../css/dashboard.css';
 
 const Dashboard = () => {
-    const [receitasPorMes, setReceitasPorMes] = useState(Array(12).fill(0));  // Inicializando com 0 para todos os meses
-    const [despesasPorMes, setDespesasPorMes] = useState(Array(12).fill(0));  // Inicializando com 0 para todos os meses
+    const [receitasPorMes, setReceitasPorMes] = useState(Array(12).fill(0));  
+    const [despesasPorMes, setDespesasPorMes] = useState(Array(12).fill(0));  
     const [isLoading, setIsLoading] = useState(true);
 
     // Meses do ano em ordem
@@ -16,23 +16,17 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 const dados = await obterReceitasDespesasPorMes();
-    
-                // Verificar o retorno da API
-                console.log('Dados recebidos da API:', dados);
-    
-                // Arrays temporários para receitas e despesas por mês
+
                 const receitasTemp = Array(12).fill(0);
                 const despesasTemp = Array(12).fill(0);
     
-                // Mapeando os dados para cada mês corretamente
                 dados.forEach(item => {
-                    const mesIndex = item.mes - 1;  // Certifique-se de que o índice está correto
+                    const mesIndex = item.mes - 1;  
                     receitasTemp[mesIndex] = item.totalReceitas;
                     despesasTemp[mesIndex] = item.totalDespesas;
                 });
                 
     
-                // Atualizando o estado com os valores por mês
                 setReceitasPorMes(receitasTemp);
                 setDespesasPorMes(despesasTemp);
                 setIsLoading(false);
@@ -52,7 +46,7 @@ const Dashboard = () => {
             height: 300 
         },
         title: {
-            text: 'Receitas Totais'
+            text: 'Minhas Receitas em 2024'
         },
         xAxis: {
             categories: meses
@@ -70,7 +64,7 @@ const Dashboard = () => {
             height: 300 
         },
         title: {
-            text: 'Despesas Totais'
+            text: 'Minhas Despesas em 2024'
         },
         xAxis: {
             categories: meses
