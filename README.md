@@ -25,14 +25,12 @@ Substitua "SeuUsuario" pelo seu usuário do PostgreSQL, bem como o "SuaSenha" po
 Mac, Linux (CLI):
 
 - `dotnet ef database update --context UsuariosDbContext`
--  `dotnet ef database update --context DespesasDbContext`
-- `dotnet ef database update --context ReceitasDbContext`
+-  `dotnet ef database update --context TransacoesDbContext`
 
 Windows(Visual Studio) (NuGet Package Console):
 
 - `Update-Database -Context UsuariosDbContext`
-- `Update-Database -Context DespesasDbContext`
-- `Update-Database -Context ReceitasDbContext`
+- `Update-Database -Context TransacoesDbContext`
   
 Cada DbContext representa um conjunto específico de tabelas e migrações que precisam ser aplicadas separadamente.
 
